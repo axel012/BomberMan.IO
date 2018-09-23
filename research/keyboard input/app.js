@@ -12,10 +12,30 @@ server.listen(3000, function() {
 io.on('connection', function(socket) {
   console.log('connected');
   socket.on('update', function(data) {
-    console.log(data);
+ 
+	switch(data){
+		case 68: 
+		pos.x+=5;
+		break;
+		case 65: 
+		pos.x-=5;
+		break;
+		case 87:
+		pos.y -=5;
+		break;
+		case 83:
+		pos.y +=5;
+		break;
+	}
     socket.emit('update', state);
   });
+  socket.on('state',(data)=>{
+	  socket.emit('state',pos);
+
+  });
 });
+
+var pos = {x:0,y:0};
 
 var loopAsync = function() {
   setImmediate(loop);

@@ -1,0 +1,22 @@
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <script src="httpS://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+<script>
+  $(function() {
+    var socket = io();
+    socket.on('connect', function() {
+      $('body').append('<p>Connected!</p>');
+    });
+    socket.on('update', function(data) {
+      $('body').append('<p>' + JSON.stringify(data) + '</p>');
+    });
+    $(document).keydown(function(e) {
+      socket.emit('update', e.which);
+    });
+  });
+</script>
+</body>
+</html>

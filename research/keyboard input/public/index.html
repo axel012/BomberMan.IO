@@ -1,50 +1,10 @@
-<html>
-<head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-  <script src="httpS://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <script src="p5.min.js"></script>
-</head>
-<body>
-<script>
-  $(function() {
-     socket = io();
-    socket.on('connect', function() {
-     // $('body').append('<p>Connected!</p>');
-    });
-    socket.on('update', function(data) {
-      //$('body').append('<p>' + JSON.stringify(data) + '</p>');
-    });
-	
-	  socket.on('state', function(data) {
-     
-	  pos = data;
-    });
-	
-    $(document).keydown(function(e) {
-	console.log(e);
-      socket.emit('update', e.which);
-    });
-  });
-  
-  var pos;
-  var lastpos;
-  var socket;
-  function setup(){
-  createCanvas(400,400);
-  }
-  function draw(){
-	socket.emit('state',0);
-	if(lastpos && pos){
-//	pos.x = lerp(lastpos.x,pos.x,0.5);
-//	pos.y = lerp(lastpos.y,pos.y,0.5);
-	}
-	background(0);
-	fill(255);
-	if(pos){
-	lastpos = pos;
-	rect(pos.x,pos.y,50,50);
-	}
-  }
-</script>
-</body>
+ <html>
+ <head>
+ <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+	 <script src = "httpS://code.jquery.com/jquery-2.1.4.min.js">  </script>
+	<script src="p5.min.js"></script>
+	 </head>
+	 <body>
+	 <script src="game.js"></script>
+ </body>
 </html>

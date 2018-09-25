@@ -26,7 +26,14 @@ io.on('connection', function(socket) {
   });
   
   socket.on("move",(data)=>{
-	  /*socket.player.pos.x +=   2 * data.RIGHT;
+    socket.player.xMove = 0;
+    socket.player.yMove = 0;
+    socket.player.xMove += Player.SPEED * data.RIGHT; 
+    socket.player.xMove -= Player.SPEED * data.LEFT; 
+  
+    socket.player.yMove += Player.SPEED * data.DOWN; 
+    socket.player.yMove -= Player.SPEED * data.UP; 
+    /*socket.player.pos.x +=   2 * data.RIGHT;
 	  socket.player.pos.x +=  -2 * data.LEFT;
 	  socket.player.pos.y +=  2 * data.DOWN;
 	  socket.player.pos.y +=  -2 * data.UP;	 
@@ -44,9 +51,24 @@ io.on('connection', function(socket) {
 });
 
 class Player{
+  //world move speed;
+  static get SPEED(){return 0.3;}
 	constructor(){
+    //world x,y coords
+    this.xMove = 0;
+    this.yMove = 0;
 		this.pos = {x:0,y:0};
-	}
+  }
+  move(){
+    this.pos.x += this.xMove;
+    if(this.pos.x < 0){
+      this.pos.x = 0;
+    }
+  //  if(this.pos.x +  > World.SIZE){
+   //   this.pos.x = World.SIZE - 16/World.SIZE;
+   // }
+    this.pos.y += this.yMove;
+  }
 }
 
 var pos = {x:0,y:0};
@@ -61,13 +83,18 @@ function loop() {
   if(last + updateRate <= now){
   let delta = (now - last)/1000;
   last = now;
- if(players.length > 0)
-	io.emit("state",players);
+  for(let p of players){
+    p.move();
+  }
+  io.emit("state",players);
+ 
 }
   loopAsync();
 }
 
-
+class World{
+  static get SIZE(){return 15;}
+}
 	
 
 

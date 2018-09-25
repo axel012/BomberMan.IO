@@ -130,7 +130,7 @@ class GameManager {
 		
 		this.network.addEventListener("state",(data)=>{
 			this.players = data;
-			//console.log(this.players);
+			console.log(this.players);
 		})
 	}
 	
@@ -158,7 +158,7 @@ function draw(){
 	fill(255);
 	if(game.players)
 	for(let player of game.players){
-		rect(player.pos.x,player.pos.y,50,50);
+		rect(player.pos.x * 32,player.pos.y * 32,16,16);
 	}
 	//if(game.pos)
 		//rect(game.pos.x,game.pos.y,50,50);

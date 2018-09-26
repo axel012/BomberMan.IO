@@ -25,7 +25,7 @@ const Stage = require("./lib/Stage.js");
 
 
 app.use(express.static(path.join(__dirname, 'public')));
-server.listen(3001,"10.0.22.52", function() {
+server.listen(3001, function() {
   console.log('Listening port : 10.0.22.52:3001');
 });
 
@@ -62,7 +62,7 @@ io.on('connection', (socket)=>{
 });
 
 socket.on("_ping",(data)=>{
-	var time = Date.now() + data;
+	var time = Date.now() + (Date.now() - data);
 	socket.emit("_pong",time);
 });
 

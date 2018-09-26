@@ -58,12 +58,21 @@ class Map {
         }
       
     }
+	
+	static set IO(io){
+		this.io = io;
+	}
 
     static getTileByPos(x,y){
         if(x >= 0 && x < this.mapWidth && y >= 0 && y < this.mapHeight){
             return this.tiles[y][x];
         }
     }
+	
+	static setTile(x,y,index){
+		this.tiles[y][x] = index;
+		this.io.emit("map_update",{x,y,tileID:index});
+	}
 
 }
 

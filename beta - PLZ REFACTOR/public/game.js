@@ -1,7 +1,8 @@
 let mapImage;
-
+let spriteSheet;
 function preload(){
 mapImage = loadImage("tiles.png");
+spriteSheet = loadImage("sprite.png");
 }
 
 class Assets{
@@ -11,8 +12,77 @@ class Assets{
         this.Tile.push(mapImage.get(0,0,32,32));
         this.Tile.push(mapImage.get(32,0,32,32));
         this.Tile.push(mapImage.get(64,0,32,32));
+        this.Tile.push(mapImage.get(96,0,32,32));
+        this.Tile.push(mapImage.get(96,0,32,32));
+        this.Tile.push(mapImage.get(128,0,32,32));
+		this.Sprite = {};
     }
+	
 }
+
+
+
+class Animation{
+	constructor(sheet,w,h){
+		this.sheet = sheet;
+		this.w = w;
+		this.h = h;
+		this.aspectRatio = h/w;
+		this.anims = {};
+		this.currentAnim = null;
+	}
+	registerAnim(name,row,Nframes,totalTime,stop){
+		this.anims[name] = {};
+		this.anims[name].frames = [];
+		this.anims[name].currentTime = 0;
+		this.anims[name].frameCount = Nframes;
+		this.anims[name].stop = stop === undefined ? false :  true;
+		this.anims[name].ended = false;
+		for(var i=0;i<Nframes;i++){
+			this.anims[name].frames.push(this.sheet.get(i*this.w,row*this.h,this.w,this.h));
+		}
+		this.anims[name].dt = totalTime/this.anims[name].frameCount;
+		this.anims[name].currentframeIndex = 0;
+	}
+	
+	render(x,y,w,h){
+		if(this.currentAnim !== null){
+			image(this.currentAnim.frames[this.currentAnim.currentframeIndex],x,y,w,h);
+		}
+	}
+	
+	update(dt){
+		if(this.currentAnim !== null){
+		var anim = this.currentAnim;
+			if(anim.stop && anim.ended) return;
+		anim.currentTime += dt;
+		if(anim.currentTime > anim.dt){
+			anim.currentTime = 0;
+			anim.currentframeIndex++;
+			if(anim.currentframeIndex >= anim.frameCount){
+				if(anim.stop)
+					anim.ended = true;
+				anim.currentframeIndex = anim.frameCount-1;
+			}
+		}
+		}
+	}
+	
+	setCurrentAnim(name){
+		var anim = this.anims[name];
+		if(anim !== undefined){
+			//reset anim
+			anim.currentframeIndex = 0;
+			anim.currentTime = 0;
+			anim.ended = false;
+			this.currentAnim = anim;
+			
+		}
+	}
+}
+
+
+
 
 class Entity {
     constructor(x, y, w, h) {
@@ -111,7 +181,7 @@ class Stage {
     }
 
     render() {
-        background(0);
+        background(255);
         // translate(this.camera.x * Tile.SIZE,this.camera.y*Tile.SIZE);
         Map.render(this.camera);
         for (let e of this.entities) {
@@ -143,15 +213,22 @@ class Stage {
     }
 
     update(dt) {
-       // for (let p of this.players) {
-      //      p.update(dt);
+        for (let p of this.players) {
+            p.update(dt);
    
-        //}
+        }
         //for(let e of this.entities){
         //    e.update();
         //}
     }
 
+}
+
+class DIR{
+	static get LEFT(){return 0;}
+	static get RIGHT(){return 1;}
+	static get UP(){return 2;}
+	static get DOWN(){return 3;}
 }
 
 class Player extends Entity {
@@ -165,14 +242,41 @@ class Player extends Entity {
         this.currentCooldown = 0;
 
         this.speed = 2/Tile.SIZE;
-        Stage.getInstance().registerKeyListener(() => {
-            this.handleKeys();
-        });
+       
         this.maxBombs = 3;
         this.currentBombs = 0;
+		this.facing = DIR.DOWN;
+		this.animdata = ["walkleft","walkright","walkup","walkdown","idleleft","idleright","idleup","idledown"]
+		this.anim = new Animation(spriteSheet,120,130);
+		this.anim.registerAnim(this.animdata[DIR.DOWN],4,10,750);
+		this.anim.registerAnim(this.animdata[DIR.LEFT],5,10,750);
+		this.anim.registerAnim(this.animdata[DIR.UP],6,10,750);
+		this.anim.registerAnim(this.animdata[DIR.RIGHT],7,10,750);
+		this.anim.registerAnim(this.animdata[7],0,3,2000,true);
+		this.anim.registerAnim(this.animdata[4],1,3,2000,true);
+		this.anim.registerAnim(this.animdata[5],3,3,2000,true);
+		this.anim.registerAnim(this.animdata[6],2,1,2000,true);
+		
+		this.anim.setCurrentAnim(this.animdata[this.facing]);
+		this.lastInput = millis();
     }
 	
 	datafromCopy(data){
+		
+
+		if(this.x === data.x && this.y === data.y) {
+			this.lastInput = millis();
+			return;
+		}
+		
+		if(data.facing !== this.facing){
+			this.facing = data.facing;
+			this.anim.setCurrentAnim(this.animdata[this.facing]);
+		}
+		
+		var dt = millis() - this.lastInput;
+		this.lastInput = millis();
+		this.anim.update(dt);
 		this.x = data.x;
 		this.y = data.y;
 		this.currentBombs = data.currentBombs; 
@@ -226,7 +330,7 @@ class Player extends Entity {
         collisionWithTile(tx,ty){
             return Map.getTileByPos(tx,ty) !== 0;
         }
-
+//TODO: ADD PREDICTION HERE
     handleKeys() {
         this.xMove = 0;
 		this.yMove = 0;
@@ -248,20 +352,16 @@ class Player extends Entity {
 
 
     update(dt) {
-    this.move();
-      //  this.x += this.vx;
-      //  this.y += this.vy;
-      //  this.vx *= 0;
-      //  this.vy *= 0;
-        if (this.currentCooldown > 0)
-            this.currentCooldown--;
+		if(this.facing > 3)
+		this.anim.update(dt);
     }
 
     render() {
         push();
         translate(this.x*Tile.SIZE, this.y*Tile.SIZE);
-        fill(255);
-        rect(0, 0, this.w * Tile.SIZE, this.h * Tile.SIZE);
+        fill(255,0,0);
+        this.anim.render(0,0,this.w * Tile.SIZE,this.h * Tile.SIZE);
+		//rect(0, 0, this.w * Tile.SIZE, this.h * Tile.SIZE);
         pop();
     }
 
@@ -312,6 +412,11 @@ class Map {
         }
     }
 
+		static setTile(x,y,index){
+		this.tiles[y][x] = index;
+		//this.io.emit("map_update",{x,y,tileID:index});
+	}
+	
     static render(camera) {
       //  push();
       let xo = (width - this.mapWidth * this.scl * Tile.SIZE)/2
@@ -345,6 +450,9 @@ class Tile {
         Tile.tiles = new BlockTile(1);
         Tile.tiles = new BlockTile(2);
         Tile.tiles = new BlockTile(3);
+		Tile.tiles = new BlockTile(4);
+		Tile.tiles = new BlockTile(5);
+		Tile.tiles = new BlockTile(6);
 
         
     }
@@ -397,7 +505,7 @@ class BlockTile extends Tile {
 
 
 class Bomb extends Entity {
-    static get size() { return 16; }
+    static get size() { return 30; }
     
     constructor(ownerEntity) {
         super(ownerEntity.x, ownerEntity.y, Bomb.size, Bomb.size);
@@ -528,6 +636,7 @@ class Keys{
 	static get RIGHT() {return 68;}
 	static get UP() {return 87;}
 	static get DOWN() {return 83;}
+	static get BOMBKEY(){return 32;}
 	
 }
 
@@ -535,7 +644,7 @@ class InputManager {
 
 	
 	constructor() {
-		this.moving = {RIGHT:false,LEFT:false,UP:false,DOWN:false};
+		this.moving = {RIGHT:false,LEFT:false,UP:false,DOWN:false,BOMBKEY:false};
 		//Copy 
 		this.lastMove = Object.assign({}, this.moving);
 		let keyHandler =  (e) => {
@@ -548,6 +657,8 @@ class InputManager {
 				this.moving.UP = (e.type == "keydown");
 			}else if (e.keyCode == Keys.DOWN) {
 				this.moving.DOWN = (e.type == "keydown");
+			}else if (e.keyCode == Keys.BOMBKEY) {
+				this.moving.BOMBKEY = (e.type == "keydown");
 			}
 			
 			if(JSON.stringify(this.moving) !== JSON.stringify(this.lastMove)){ 
@@ -592,6 +703,8 @@ function setup() {
 		//console.log(data);
 		Map.load(data);
 	});
+
+	
 	
 	NetworkManager.Instance.addEventListener("current_players",(data)=>{
 		for(var i=0;i<data.length;i++)
@@ -614,6 +727,16 @@ function setup() {
 		for(var i=0;i<data.length;i++)
 		Stage.getInstance().players[i].datafromCopy(data[i])
 	});
+	
+	NetworkManager.Instance.addEventListener("current_map",(data)=>{
+		//console.log(data);
+		Map.tiles = data;
+	});
+	
+	NetworkManager.Instance.addEventListener("map_update",(data)=>{
+		console.log(data);
+		Map.setTile(data.x,data.y,data.tileID);
+	});
 
     //Map.load(TileMaps.map1);
     //stage.addEntity(new Player(32/Tile.SIZE,32/Tile.SIZE));
@@ -621,7 +744,7 @@ function setup() {
 
 
 function draw() {
-    stage.handleKeys();
+    //stage.handleKeys();
     stage.render();
     let dt = millis() - lastTime;
     stage.update(dt);

@@ -20,93 +20,58 @@ const MapMod = require("./lib/Map/Map.js");
 const Map = MapMod.Map;
 const TileMap = MapMod.TileMap;
 
+//Stage module
+const Stage = require("./lib/Stage.js");
+
 
 app.use(express.static(path.join(__dirname, 'public')));
-server.listen(3000, function() {
-  console.log('listening');
+server.listen(3001, function() {
+  console.log('Listening port : 3001');
 });
+
+Map.IO = io;
 
 io.on('connection', (socket)=>{
  //add player to stage
  //add position and socket
  let p;
- if(Stage.Instance.players.length == 0){
+ if(Stage.players.length == 0){
     p = new Player(1,1)
- }else if(Stage.Instance.players.length == 1){
+ }else if(Stage.players.length == 1){
     p = new Player(12,1);
- }else if(Stage.Instance.players.length == 2){
+ }else if(Stage.players.length == 2){
     p = new Player(1,12);
- }else if(Stage.Instance.players.length == 3){
+ }else if(Stage.players.length == 3){
     p = new Player(12,12);
  }
- socket.emit("current_players",Stage.Instance.players);
+ socket.emit("current_players",Stage.players);
  io.emit("player_join",p);
  if(p !== undefined){
     p.id = socket.id;
     socket.player = p;
 }
 // io.to(socket.id).emit("wesa");
- Stage.Instance.addPlayer(p);
+ Stage.addEntity(p);
 
  socket.emit("map_data",TileMap.data);
+ socket.emit("current_map",Map.tiles);
  
  socket.on("disconnect",function(){
-     io.emit("player_leave",Stage.Instance.players.indexOf(p));
-    Stage.Instance.removeEntity(p);
+     io.emit("player_leave",Stage.players.indexOf(p));
+    Stage.removeEntity(p);
 });
 
 socket.on("move",(data)=>{
-    socket.player.handleKeys(data)
+    socket.player.handleKeys(data);
+	if(data.BOMBKEY === true){
+		// io.emit("map_update",Map.tiles);
+	}
 });
 });
 
 Map.load(TileMap.data);
+Tile.initialize();
 
-class Stage{
-    
-    static get Instance() {
-        if (this.instance == undefined) {
-            this.instance = new Stage();
-        }
-        return this.instance;
-    }
-
-    constructor(){
-        this.players = [];
-        this.bombs = [];
-    }
-    
-    addPlayer(p){
-        this.players.push(p);
-    }
-    addEntity(e){
-      //  if(e instanceof Player){
-       //     this.players.push(e)
-       // }
-      //  if(e instanceof Bomb){
-       //     this.bombs.push(e);
-       // }
-    }
-
-    removeEntity(e){
-        if(e instanceof Player){
-            this.players.splice(this.players.indexOf(e), 1);
-        }
-       // if(e instanceof Bomb){
-       //     this.bombs.splice(this.bombs.indexOf(e), 1);
-       // }
-    }
-
-    update(){
-        for(let p of this.players){
-            p.update();
-        }
-        for(let b of this.bombs){
-            b.update();
-        }
-    }
-
-}
 
 
 var loopAsync = function() {
@@ -119,8 +84,8 @@ function loop() {
     if(last + updateRate <= now){
     let delta = (now - last)/1000;
     last = now;
-    Stage.Instance.update();
-    io.emit("player_state",Stage.Instance.players);
+    Stage.update(delta);
+    io.emit("player_state",Stage.players);
   }
     loopAsync();
   }

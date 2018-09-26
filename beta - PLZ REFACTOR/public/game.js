@@ -754,7 +754,7 @@ class LatencyManager{
 	
 	static get Instance() {
 		if (!this._intance) {
-			this._intance = new NetworkManager();
+			this._intance = new LatencyManager();
 		}
 		return this._intance;
 	}

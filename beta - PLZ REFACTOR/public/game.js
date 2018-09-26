@@ -263,16 +263,17 @@ class Player extends Entity {
 	
 	datafromCopy(data){
 		
-
+	if(data.facing !== this.facing){
+			this.facing = data.facing;
+			this.anim.setCurrentAnim(this.animdata[this.facing]);
+		}
+		
 		if(this.x === data.x && this.y === data.y) {
 			this.lastInput = millis();
 			return;
 		}
 		
-		if(data.facing !== this.facing){
-			this.facing = data.facing;
-			this.anim.setCurrentAnim(this.animdata[this.facing]);
-		}
+	
 		
 		var dt = millis() - this.lastInput;
 		this.lastInput = millis();

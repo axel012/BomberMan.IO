@@ -37,31 +37,53 @@ class Player extends Entity {
             if(!this.collisionWithTile(tx, Math.floor(this.y))
             && !this.collisionWithTile(tx, Math.floor(this.y + this.h))){
              this.x+= this.xMove * dt;
-            }else{
-            this.x = tx - this.w -1/Tile.SIZE;
-            }
+            }else if(this.collisionWithTile(tx,Math.floor(this.y)) &&  this.collisionWithTile(tx,Math.floor(this.y + this.h)) === false){
+			   this.y += 1/Tile.SIZE;
+		   }else if(this.collisionWithTile(tx,Math.floor(this.y)) === false &&  this.collisionWithTile(tx,Math.floor(this.y + this.h))){
+			   this.y -= 1/Tile.SIZE;
+		   }
+			
+			//else{
+            //this.x = tx - this.w -1/Tile.SIZE;
             }else if((this.xMove * dt) < 0){
              let tx = Math.floor((this.x + (this.xMove * dt)));
                  if(!this.collisionWithTile(tx, Math.floor((this.y)))
                  && !this.collisionWithTile(tx, Math.floor((this.y + this.h )))){
                  this.x+= this.xMove * dt;
-                }
+                }else if(this.collisionWithTile(tx,Math.floor(this.y)) &&  this.collisionWithTile(tx,Math.floor(this.y + this.h)) === false){
+			   this.y += 1/Tile.SIZE;
+		   }else if(this.collisionWithTile(tx,Math.floor(this.y)) === false &&  this.collisionWithTile(tx,Math.floor(this.y + this.h))){
+			   this.y -= 1/Tile.SIZE;
+		   }
             }
         }
   
          moveY(dt){
+			//moving up 
     if ((this.yMove * dt) < 0){
         let ty = Math.floor((this.y + (this.yMove * dt)));
         if(!this.collisionWithTile(Math.floor(this.x), ty) &&
            !this.collisionWithTile(Math.floor((this.x + this.w)), ty)){
             this.y += this.yMove * dt;
-        }
-    }else if((this.yMove * dt) > 0){
-        let ty = Math.floor((this.y + (this.yMove*dt) + this.h));
+        }else if(this.collisionWithTile(Math.floor(this.x),ty) &&  this.collisionWithTile(Math.floor(this.x + this.w),ty) === false){
+			   this.x += 1/Tile.SIZE;
+		   }else if(this.collisionWithTile(Math.floor(this.x),ty) === false &&  this.collisionWithTile(Math.floor(this.x + this.w),ty)){
+			   this.x -= 1/Tile.SIZE;
+		   }
+		
+		//moving down
+    }else if((this.yMove * dt) > 0){  
+	
+        let ty = Math.floor((this.y + (this.yMove*dt) + this.h));	
         if(!this.collisionWithTile(Math.floor(this.x), ty) &&
-           !this.collisionWithTile(Math.floor((this.x + this.w)), ty)){
+           !this.collisionWithTile(Math.floor((this.x + this.w)), ty)){		
             this.y += this.yMove * dt;
-        }
+		   }else if(this.collisionWithTile(Math.floor(this.x),ty) &&  this.collisionWithTile(Math.floor(this.x + this.w),ty) === false){
+			   this.x += 1/Tile.SIZE;
+		   }else if(this.collisionWithTile(Math.floor(this.x),ty) === false &&  this.collisionWithTile(Math.floor(this.x + this.w),ty)){
+			   this.x -= 1/Tile.SIZE;
+		   }
+		
     }
         }
   
@@ -79,9 +101,13 @@ class Player extends Entity {
         if (data.DOWN) this.yMove += this.speed;
         //w
         if (data.UP) this.yMove += -this.speed;
-		this.facing = this.xMove < 0 ? 0 : (this.xMove === 0 ? (this.yMove >= 0 ? 3 : 2) : 1);
+		if(!(this.xMove === 0 && this.yMove === 0))
+			this.facing = this.xMove < 0 ? 0 : (this.xMove === 0 ? (this.yMove >= 0 ? 3 : 2) : 1);
 		this.lastMove = this.facing;
+		
 		this.lastTimeMoving = Date.now();
+		this.lastX = this.x;
+		this.lastY = this.y;
 		
 		if(data.BOMBKEY) 
 			this.placeBomb();
@@ -89,16 +115,26 @@ class Player extends Entity {
 
     update(dt) {
     this.move(1);
-
+	//console.log("don't know why change " + this.facing);
 	if(this.lastTimeMoving){
-		if(Date.now() - this.lastTimeMoving > 100){
-		this.facing = this.lastMove + 4;
-		}
+		if(Date.now() - this.lastTimeMoving > 1000 ){
+			if(this.x === this.lastX && this.y === this.lastY){
+					this.facing = this.lastMove + 4;
+			}
+				this.lastX = this.x;
+				this.lastY = this.y;
+				this.lastTimeMoving = Date.now();
+		//
+//		}
 	}
     }
+}
 
     placeBomb() {
+		if(Map.getTileByPos(Math.floor(this.x),Math.floor(this.y)) === 0){
 		Stage.addEntity(new Bomb(this));
+		}
+		
     }
 
 

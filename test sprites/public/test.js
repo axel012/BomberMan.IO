@@ -7,7 +7,7 @@ var currentAnim;
 var lastTime;
 var y = 0;
 var x = 0;
-var speed = 0.05;
+var speed = 0.15;
 function preload(){
 	spriteSheet = loadImage("sprite.png");
 }
@@ -44,7 +44,7 @@ function draw(){
 	}else if(currentAnim == "walkup"){
 		y -= speed * dt;
 	}else if(currentAnim == "walkleft"){
-		x-=speed
+		x-=speed * dt;
 	}
 	
 	if(y + 96 > height || y < 0){

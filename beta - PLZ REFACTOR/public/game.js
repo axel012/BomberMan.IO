@@ -739,10 +739,38 @@ function setup() {
 		Map.setTile(data.x,data.y,data.tileID);
 	});
 
+	NetworkManager.Instance.addEventListener("_pong",(data)=>{
+		console.log("pong: " + Date.now() - data + "ms"); 
+	})
     //Map.load(TileMaps.map1);
     //stage.addEntity(new Player(32/Tile.SIZE,32/Tile.SIZE));
+
+LatencyManager.Instance.initialize();	
+
 }
 
+
+class LatencyManager{
+	
+	static get Instance() {
+		if (!this._intance) {
+			this._intance = new NetworkManager();
+		}
+		return this._intance;
+	}
+	
+	initialize(){
+		this.ping();
+	}
+	
+	ping(){
+		setTimeout(()=>{
+		NetworkManager.Instance.socket.emit("_ping",Date().now());
+		this.ping();
+		},2000);
+	}
+	
+}
 
 function draw() {
     //stage.handleKeys();

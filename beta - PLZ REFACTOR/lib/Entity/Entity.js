@@ -16,15 +16,12 @@ class Entity {
 
 class Player extends Entity {
     static get size() { return 30; }
-	//static get SPEED(){ return 16 / Tile.SIZE}
     constructor(x, y) {
         super(x, y, Player.size/Tile.SIZE, Player.size/Tile.SIZE);
         this.speed = 2/Tile.SIZE;
         this.maxBombs = 3;
         this.currentBombs = 0;
     }
-
-  
 
     move(dt){
         this.moveX(dt);
@@ -41,10 +38,7 @@ class Player extends Entity {
 			   this.y += 1/Tile.SIZE;
 		   }else if(this.collisionWithTile(tx,Math.floor(this.y)) === false &&  this.collisionWithTile(tx,Math.floor(this.y + this.h))){
 			   this.y -= 1/Tile.SIZE;
-		   }
-			
-			//else{
-            //this.x = tx - this.w -1/Tile.SIZE;
+		   }			
             }else if((this.xMove * dt) < 0){
              let tx = Math.floor((this.x + (this.xMove * dt)));
                  if(!this.collisionWithTile(tx, Math.floor((this.y)))
@@ -59,7 +53,6 @@ class Player extends Entity {
         }
   
          moveY(dt){
-			//moving up 
     if ((this.yMove * dt) < 0){
         let ty = Math.floor((this.y + (this.yMove * dt)));
         if(!this.collisionWithTile(Math.floor(this.x), ty) &&
@@ -115,7 +108,6 @@ class Player extends Entity {
 
     update(dt) {
     this.move(1);
-	//console.log("don't know why change " + this.facing);
 	if(this.lastTimeMoving){
 		if(Date.now() - this.lastTimeMoving > 1000 ){
 			if(this.x === this.lastX && this.y === this.lastY){
@@ -124,8 +116,6 @@ class Player extends Entity {
 				this.lastX = this.x;
 				this.lastY = this.y;
 				this.lastTimeMoving = Date.now();
-		//
-//		}
 	}
     }
 }

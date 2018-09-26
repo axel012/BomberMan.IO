@@ -25,8 +25,8 @@ const Stage = require("./lib/Stage.js");
 
 
 app.use(express.static(path.join(__dirname, 'public')));
-server.listen(3001, function() {
-  console.log('Listening port : 3001');
+server.listen(3001,"10.0.22.52", function() {
+  console.log('Listening port : 10.0.22.52:3001');
 });
 
 Map.IO = io;
@@ -59,6 +59,11 @@ io.on('connection', (socket)=>{
  socket.on("disconnect",function(){
      io.emit("player_leave",Stage.players.indexOf(p));
     Stage.removeEntity(p);
+});
+
+socket.on("_ping",(data)=>{
+	var time = Date.now() + data;
+	socket.emit("_pong",time);
 });
 
 socket.on("move",(data)=>{

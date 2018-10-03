@@ -1,0 +1,22 @@
+
+API
+----------------------------------------------------------------
+GET---DATOS DE SALAS     -> GAMEapi/rooms?full=false&token=UUID
+			           /rooms/ID...
+GET---DATOS DE JUGADORES -> GAMEapi/findUser?userID=...&token=UUID
+/?/ GET---SCOREBOARD    -> GAMEapi/scoreboard?token=UUID
+POST --- CREAR SALA -> GAMEapi/createRoom?token=UUID -- (link tipo discord)
+DELETE --- BORRAR SALA -> GAMEapi/deleteRoom?token=UUID
+PUT ---> GAMEapi/editProfile?token=UUID&data=[...]
+POST ---> GAMEapi/createProfile?...
+-------------------------------------------------------------------
+
+FUNCIONALIDADES
+CLIENTE
+--------------
+LOGIN
+	CREAR SALA/BORRAR SALA
+	UNIRSE A SALA
+	/?/SCOREBOARD
+	BUSCAR JUGADOR
+-------------

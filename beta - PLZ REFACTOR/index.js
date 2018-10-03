@@ -25,8 +25,7 @@ const Stage = require("./lib/Stage.js");
 
 
 app.use(express.static(path.join(__dirname, 'public')));
-server.listen(3001, function() {
-  console.log('Listening port : 10.0.22.52:3001');
+server.listen(3001,"0.0.0.0", function() {
 });
 
 Map.IO = io;

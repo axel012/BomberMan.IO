@@ -740,19 +740,22 @@ function setup() {
 	});
 
 	NetworkManager.Instance.addEventListener("_pong",(data)=>{
-		console.log("pong: " + (Date.now() - data) + "ms"); 
+		console.log("pong: " + Date.now() - data + "ms"); 
 	})
-    
+    //Map.load(TileMaps.map1);
+    //stage.addEntity(new Player(32/Tile.SIZE,32/Tile.SIZE));
+
 LatencyManager.Instance.initialize();	
 
 }
 
 
 class LatencyManager{
-	
+	constructor(){}
+
 	static get Instance() {
 		if (!this._intance) {
-			this._intance = new LatencyManager();
+	this._intance = new LatencyManager();
 		}
 		return this._intance;
 	}
@@ -763,7 +766,7 @@ class LatencyManager{
 	
 	ping(){
 		setTimeout(()=>{
-		NetworkManager.Instance.socket.emit("_ping",Date.now());
+		NetworkManager.Instance.socket.emit("_ping",Date().now());
 		this.ping();
 		},2000);
 	}

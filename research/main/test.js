@@ -1,12 +1,27 @@
 var tank;
+var managerSounds;
 var tanksp;
+
 function preload(){
-    tanksp = loadImage("redtank.png");
+    Assets.initialize();
+    Assets.registerAsset("sound1",createAudio("../sounds/sound1.mp3"));
+    Assets.registerAsset("sound2",createAudio("../sounds/sound2.mp3"));
+    Assets.registerAsset("sound3",createAudio("../sounds/sound3.mp3"));
+    Assets.registerAsset("redtank",loadImage("redtank.png"));
+   
+    
+    
 }
 function setup(){
     createCanvas(windowWidth*.8,windowHeight*.8);
+    tanksp = Assets.get("redtank");
     var img = tanksp.get(0,32*3,32,32);
     tank = new Tank(img,width/2,height/2);
+    managerSounds=new SoundManager();
+    managerSounds.registerSounds(Assets.get("sound1"));
+    managerSounds.registerSounds(Assets.get("sound2"));
+    managerSounds.registerSounds(Assets.get("sound3"));
+    managerSounds.playSounds();
 }
 
 function draw(){

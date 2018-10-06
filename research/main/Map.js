@@ -1,59 +1,55 @@
 class Map {
 
-    static load(map) {
-        this.TileSIZE = 32;
-        this.mapWidth = map.width;
-        this.layers = map.layers;
-        this.numRows = map.width;
-        this.numCols = map.height;
-        this.spritesImages = [];
-        this.getSpritesImages(map);
-    }
+	static load(map) {
+		this.layers = map.layers;
+		this.mapWidth = map.width;
+		this.mapHeight = map.height;
 
-    static render() {
+		for (let l = 0; l < this.layers.length; l++) {
+			let layer = this.layers[l];
+			layer.tiles = [];
+			for (let x = 0; x < this.mapWidth; x++) {
+				for (let y = 0; y < this.mapHeight; y++) {
+					layer.tiles.push(new Array(this.mapWidth));
 
-        for (let l = 0; l < this.layers.length; ++l) {
-            if (this.layers[l].type === "objectgroup") {
-                continue;
-            }
-            for (let r = 0; r < this.numRows; ++r) {
-                for (let c = 0; c < this.numCols; ++c) {
-                    let index = c + r * (this.numCols);
-                    this.loadTile(r, c, this.layers[l].data[index] - 1);
-                }
-            }
-        }
-    }
+					layer.tiles[x][y] = layer.data[x + y * this.mapWidth];
+				}
+			}
+		}
+		this.scl = 1;
+		//this.onResize();
+	}
 
-    static loadTile(nrow, ncol, id) {
+	static onResize() {
+		if (height < width)
+			this.scl = height / (camera.viewPortHeight * Tile.SIZE);
+		else
+			this.scl = width / (this.mapWidth * Tile.SIZE);
+		
+		
+		
+	}
 
-        if (id !== -1) {
-            let x = (width - this.mapWidth*this.TileSIZE) / 2 + ncol * this.TileSIZE;
-            let y = nrow * this.TileSIZE
-            image(this.spritesImages[id], x, y);
-        }
+	static render(camera) {
 
-    }
+		let xo = (width - this.mapWidth * this.scl * Tile.SIZE) / 2
+		translate(xo, 0);
+		//scale(this.scl);
+		translate(-camera.xOffset * Tile.SIZE, -camera.yOffset * Tile.SIZE);
 
-
-    static getSpritesImages(map) {
-
-        let indexid = 0;
-        for (let i = 0; i < map.TileImages.length; ++i) {
-            let sprImage = Assets.get(map.TileImages[i]);
-            const w = sprImage.width;
-            const h = sprImage.height;
-            const colCount = Math.floor(w / this.TileSIZE);
-            const rowCount = Math.floor(h / this.TileSIZE);
-            for (let r = 0; r < rowCount; ++r) {
-                for (let c = 0; c < colCount; ++c) {
-                    let x = c * this.TileSIZE;
-                    let y = r * this.TileSIZE;
-                    this.spritesImages[indexid] = sprImage.get(x, y, this.TileSIZE, this.TileSIZE);
-                    ++indexid;
-                }
-            }
-        }
-    }
-
+		let minX = floor(max(0, camera.xOffset));
+		let minY = floor(max(0, camera.yOffset));
+		let maxX = floor(min(this.mapWidth, camera.xOffset + camera.viewPortWidth + 1));
+		let maxY = floor(min(this.mapHeight, camera.yOffset + camera.viewPortHeight + 1));
+		for (let l = 0; l < this.layers.length; l++) {
+			let layer = this.layers[l];
+			for (let y = minY; y < maxY; y++) {
+				for (let x = minX; x < maxX; x++) {
+					let id = layer.tiles[x][y] - 1;
+					if(id < 0) continue;
+					TileManager.getTile(id).render(x,y);
+				}
+			}
+		}
+	}
 }

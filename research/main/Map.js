@@ -1,4 +1,5 @@
 class Map {
+    
 
     static load(map) {
         this.TileSIZE = 32;

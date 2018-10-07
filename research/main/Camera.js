@@ -19,10 +19,10 @@ class Camera {
 		}
 	}
 
-    move(amtX, amtY) {
+/*    move(amtX, amtY) {
         this.xOffset += amtX;
         this.yOffset += amtY;
-        }
+        }*/
 
     followEntity(e){
 		this.xOffset = (e.x - width/2)/Tile.SIZE;

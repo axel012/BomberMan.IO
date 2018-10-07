@@ -1,19 +1,24 @@
 var tank;
 var managerSounds;
 var tanksp;
+let cnv;
 
 function preload() {
     Assets.initialize();
-  //  Assets.registerAsset("sound1", createAudio("/sounds/sound1.mp3"));
-   // Assets.registerAsset("sound2", createAudio("/sounds/sound2.mp3"));
-   // Assets.registerAsset("sound3", createAudio("/sounds/sound3.mp3"));
+    Assets.registerAsset("sound4", createAudio("../sounds/sound4.mp3"));
+    Assets.registerAsset("sound5", createAudio("../sounds/sound5.mp3"));
+    Assets.registerAsset("sound6", createAudio("../sounds/sound6.mp3"));
+    Assets.registerAsset("sound1", createAudio("../sounds/sound1.mp3"));
+    Assets.registerAsset("sound2", createAudio("../sounds/sound2.mp3"));
+    Assets.registerAsset("sound3", createAudio("../sounds/sound3.mp3"));
     Assets.registerAsset("redtank", loadImage("redtank.png"));
-    Assets.registerAsset("map", loadJSON("/maps/map.tmx"));
-    Assets.registerAsset("tileset", loadImage("/maps/tileset.png"));
+    Assets.registerAsset("map", loadJSON("./maps/map.json"));
+    Assets.registerAsset("tileset", loadImage("./maps/tileset.png"));
+    Assets.registerAsset("bgTiles", loadImage("./maps/bgTiles.png"));
 }
 let camera;
 function setup() {
-    let cnv = createCanvas(windowWidth * 0.9, windowHeight * 0.9);
+    cnv = createCanvas(windowWidth * 0.9, windowHeight * 0.9);
     var x = (windowWidth - width) / 2;
     var y = (windowHeight - height) / 2;
     cnv.position(x, y);
@@ -21,10 +26,16 @@ function setup() {
     var img = tanksp.get(0, 32 * 3, 32, 32);
     tank = new Tank(img, width / 2, height / 2);
     managerSounds = new SoundManager();
-    //managerSounds.registerSounds(Assets.get("sound1"));
-    //managerSounds.registerSounds(Assets.get("sound2"));
-    //managerSounds.registerSounds(Assets.get("sound3"));
-    //managerSounds.playSounds();
+    
+
+
+    managerSounds.registerSounds(Assets.get("sound1"));
+    managerSounds.registerSounds(Assets.get("sound2"));
+    managerSounds.registerSounds(Assets.get("sound3"));
+    managerSounds.registerSounds(Assets.get("sound4"));
+    managerSounds.registerSounds(Assets.get("sound5"));
+    managerSounds.registerSounds(Assets.get("sound6"));
+    managerSounds.playSounds();
 	loadTiles();
 	camera = new Camera(40,40);
     Map.load(Assets.get("map"));
@@ -49,6 +60,7 @@ function loadTiles(){
 
 function draw() {
     background(0);
+
 	Map.render(camera);
    // Map.render();
     tank.handleKeys();
@@ -56,8 +68,9 @@ function draw() {
     tank.display();
     noStroke();
     fill(255);
-
    text(frameRate(), 50, 50);
+
+
 
     //fill(255);
     //for(var i=1;i<8;i+=2)
@@ -142,9 +155,13 @@ class Tank {
         noFill();
         stroke(0, 255, 0);
         strokeWeight(2);
-        //        rect(-this.w/2,-this.w/2,this.w,this.w);
+                rect(-this.w/2,-this.w/2,this.w,this.w);
         rotate(this.rotation);
         image(this.img, -this.w / 2, -this.w / 2);
+
+/*
+        copy(cnv, this.x -this.w / 2 ,this.y -this.w / 2, this.w, this.w, this.x -this.w / 2 ,this.y -this.w / 2, this.w, this.w);
+*/
         stroke(0, 0, 255);
         //  fill(255);
         //      rect(-this.w/2,-this.w/2,this.w,this.w);

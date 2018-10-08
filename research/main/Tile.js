@@ -1,25 +1,50 @@
-class TileManager{
-	
-	static registerTile(img,walkable){
-		if(this.tiles === undefined){
-			this.tiles = [];
-		}
-		this.tiles.push(new Tile(img,walkable));
-	}
-	
-	static getTile(id){
-		return this.tiles[id];
-	}
-	
+class TileManager {
+
+    static registerTile(idImg, x, y, breakable, resistance) {
+        if (this.tiles === undefined) {
+            this.tiles = [];
+        }
+        this.tiles.push(new Tile(idImg, x, y, breakable, resistance));
+    }
+
+    static getTile(id) {
+        return this.tiles[id];
+    }
+
+    static registerTileImage(img) {
+        if (this.imagesTiles === undefined) {
+            this.imagesTiles = [];
+        }
+        else {
+            this.imagesTiles.push(img);
+        }
+    }
+
+    static getTileImage(id) {
+        return this.imagesTiles[id];
+    }
 }
 
-class Tile{
-	static get SIZE(){return 16;}
-	constructor(img,walkable){
-		this.img = img;
-		this.walkable = walkable;
-	}
-	render(x,y){
-		image(this.img,x * Tile.SIZE,y * Tile.SIZE);
-	}
+class Tile {
+    static get SIZE() {
+        return 32;
+    }
+
+    constructor(idImg, x, y, breakable, resistance) {
+        if (breakable && resistance === 0) {
+            this.walkable = true;
+        }
+        else {
+            this.walkable = false;
+        }
+        this.idImg = idImg;
+        this.posX = x;
+        this.posY = y;
+        this.breakable = breakable;
+        this.resistance = resistance;
+    }
+
+    render() {
+        image(TileManager.getTileImage(this.idImg), this.posX * Tile.SIZE, this.posY * Tile.SIZE);
+    }
 }

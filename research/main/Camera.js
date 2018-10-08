@@ -9,13 +9,13 @@ class Camera {
 	fix(){
 		if(this.xOffset < 0)
 			this.xOffset = 0;
-		else if(this.xOffset > Map.mapWidth - width/Tile.SIZE){
+		else if(this.xOffset > Map.numCols - width/Tile.SIZE){
 			this.xOffset = 0;
 		}
 		if(this.yOffset < 0)
 			this.yOffset = 0;
-		else if(this.yOffset > Map.mapHeight - height/Tile.SIZE){
-			this.yOffset = Map.mapHeight - height/Tile.SIZE
+		else if(this.yOffset > Map.numRows - height/Tile.SIZE){
+			this.yOffset = Map.numRows - height/Tile.SIZE
 		}
 	}
 

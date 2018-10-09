@@ -42,15 +42,22 @@ class Map {
     /*esto hay q cambiarlo lo hice asi nomas para safar pero habria que preguntar dada la posicion si los tres tiles son no collidabgles
     * osea el tile de esa posicion de cada capa en el arreglo map3d para cuando en el futuro tengamos que elmiinar blockes a tiros
     * podamos mostrar el tile del background */
-    static isThereACollidable(x, y) {
-        let collidable = this.collidables.filter((c) => { return c.x <= x && x <= (c.x + Tile.SIZE) && c.y <= y && y <= (c.y + Tile.SIZE)
+    static getThereACollidable(x, y, w, h) {
+        let collidable = this.collidables.filter((c) => {
+            return (c.x <= (x-w/2) && (c.x + Tile.SIZE) >= (x-w/2) && c.y <= (y-h/2) && (c.y + Tile.SIZE) >= (y-h/2))
+            ||
+            (c.x <= (x-w/2) && (c.x + Tile.SIZE) >= (x-w/2) && c.y <= (y+h/2) && (c.y + Tile.SIZE) >= (y+h/2))
+            ||
+            (c.x <= (x+w/2) && (c.x + Tile.SIZE) >= (x+w/2) && c.y <= (y-h/2) && (c.y + Tile.SIZE) >= (y-h/2))
 
+            ||
+            (c.x <= (x+w/2) && (c.x + Tile.SIZE) >= (x+w/2) && c.y <= (y+h/2) && (c.y + Tile.SIZE) >= (y+h/2))
 
         });
         if (collidable[0] !== undefined) {
-            return false;
+            return collidable[0] ;
         }
-        return true;
+        return null;
     }
 
     static loadSpritesTiles(map) {

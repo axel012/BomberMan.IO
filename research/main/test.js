@@ -30,15 +30,15 @@ function setup() {
     tanksp = Assets.get("redtank");
     let img = tanksp.get(0, 32 * 3, 32, 32);
     tank = new Tank(img, width / 2, height / 2);
-    managerSounds = new SoundManager();
-    managerSounds.registerSounds("sound1",Assets.get("sound1"));
-    managerSounds.registerSounds("sound2",Assets.get("sound2"));
-    managerSounds.registerSounds("sound3",Assets.get("sound3"));
-    managerSounds.registerSounds("sound4",Assets.get("sound4"));
-    managerSounds.registerSounds("sound5",Assets.get("sound5"));
-    managerSounds.registerSounds("sound6",Assets.get("sound6"));
-    managerSounds.registerSounds("engine",Assets.get("engine"));
-    managerSounds.registerSounds("movetank",Assets.get("movetank"));
+    managerSounds = SoundManager.getInstance();
+    managerSounds.registerSounds("sound1",Assets.get("sound1"),SoundManager.TYPESOUND.MUSIC);
+    managerSounds.registerSounds("sound2",Assets.get("sound2"),SoundManager.TYPESOUND.MUSIC);
+    managerSounds.registerSounds("sound3",Assets.get("sound3"),SoundManager.TYPESOUND.MUSIC);
+    managerSounds.registerSounds("sound4",Assets.get("sound4"),SoundManager.TYPESOUND.MUSIC);
+    managerSounds.registerSounds("sound5",Assets.get("sound5"),SoundManager.TYPESOUND.MUSIC);
+    managerSounds.registerSounds("sound6",Assets.get("sound6"),SoundManager.TYPESOUND.MUSIC);
+    managerSounds.registerSounds("engine",Assets.get("engine"),SoundManager.TYPESOUND.EFFECT);
+    managerSounds.registerSounds("movetank",Assets.get("movetank"),SoundManager.TYPESOUND.EFFECT);
 
     managerSounds.playSound("engine",true);
     managerSounds.playSounds();
@@ -78,6 +78,15 @@ function draw() {
     text(frameRate(), 50, 50);
 }
 
+function keyReleased(){
+   
+   if(keyCode===UP_ARROW || keyCode===DOWN_ARROW){
+    console.log(keyCode+" "+UP_ARROW);
+       managerSounds.stopSound('movetank');
+       managerSounds.playSound('engine',true);
+   }
+   return false;
+}
 
 class Tank {
     constructor(img, x, y) {
@@ -108,10 +117,7 @@ class Tank {
             }
             this.rSpeed = dr;
         }
-        if (keyIsDown(UP_ARROW)) {
-            this.xMove += this.linearSpeed * cos(this.rotation);
-            this.yMove += this.linearSpeed * sin(this.rotation);
-        }
+       
         if (keyIsDown(DOWN_ARROW) && (keyIsDown(LEFT_ARROW) || keyIsDown(RIGHT_ARROW))) {
             let dr = 0;
             if (keyIsDown(LEFT_ARROW)) {
@@ -122,11 +128,19 @@ class Tank {
             }
             this.rSpeed = dr;
         }
-        if (keyIsDown(DOWN_ARROW)) {
-            this.xMove += -this.linearSpeed * cos(this.rotation);
-            this.yMove += -this.linearSpeed * sin(this.rotation);
+       
+        if(keyIsDown(DOWN_ARROW) || keyIsDown(UP_ARROW)){
+            this.xMove += (keyIsDown(UP_ARROW)===true?1:(-1))*this.linearSpeed * cos(this.rotation);
+            this.yMove += (keyIsDown(UP_ARROW)===true?1:(-1))*this.linearSpeed * sin(this.rotation);
+            managerSounds.stopSound('engine');
+            managerSounds.playSound('movetank',true);
+         
+            
         }
+        
+
     }
+    
 
     update() {
         this.rotation += this.rSpeed;

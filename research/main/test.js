@@ -7,19 +7,19 @@ let camera;
 function preload() {
     Assets.initialize();
 
-    Assets.registerAsset("movetank", loadSound("./sounds/movetank.mp3"));
-    Assets.registerAsset("engine", loadSound("./sounds/engine.mp3"));
-    Assets.registerAsset("sound1", loadSound("./sounds/sound1.mp3"));
-    Assets.registerAsset("sound2", loadSound("./sounds/sound2.mp3"));
-    Assets.registerAsset("sound3", loadSound("./sounds/sound3.mp3"));
-    Assets.registerAsset("sound4", loadSound("./sounds/sound4.mp3"));
-    Assets.registerAsset("sound5", loadSound("./sounds/sound5.mp3"));
-    Assets.registerAsset("sound6", loadSound("./sounds/sound6.mp3"));
+    Assets.registerAsset("movetank", loadSound("sounds/movetank.mp3"));
+    Assets.registerAsset("engine", loadSound("sounds/engine.mp3"));
+    Assets.registerAsset("sound1", loadSound("sounds/sound1.mp3"));
+    Assets.registerAsset("sound2", loadSound("sounds/sound2.mp3"));
+    Assets.registerAsset("sound3", loadSound("sounds/sound3.mp3"));
+    Assets.registerAsset("sound4", loadSound("sounds/sound4.mp3"));
+    Assets.registerAsset("sound5", loadSound("sounds/sound5.mp3"));
+    Assets.registerAsset("sound6", loadSound("sounds/sound6.mp3"));
     Assets.registerAsset("redtank", loadImage("redtank.png"));
-    Assets.registerAsset("map", loadJSON("./maps/mapa1.json"));
-    Assets.registerAsset("tileset", loadImage("./maps/tileset.png"));
-    Assets.registerAsset("bgTiles", loadImage("./maps/bgTiles.png"));
-    Assets.registerAsset("blockTiles", loadImage("./maps/blockTiles.png"));
+    Assets.registerAsset("map", loadJSON("maps/mapa1.json"));
+    Assets.registerAsset("tileset", loadImage("maps/tileset.png"));
+    Assets.registerAsset("bgTiles", loadImage("maps/bgTiles.png"));
+    Assets.registerAsset("blockTiles", loadImage("maps/blockTiles.png"));
 }
 
 function setup() {
@@ -41,7 +41,7 @@ function setup() {
     managerSounds.registerSounds("movetank",Assets.get("movetank"),SoundManager.TYPESOUND.EFFECT);
 
     managerSounds.playSound("engine",true);
-    managerSounds.playSounds();
+    // managerSounds.playSounds();
   /*  loadTiles();*/
     camera = new Camera(Assets.get("map").width, Assets.get("map").height);
     Map.load(Assets.get("map"));
@@ -81,7 +81,7 @@ function draw() {
 function keyReleased(){
    
    if(keyCode===UP_ARROW || keyCode===DOWN_ARROW){
-    console.log(keyCode+" "+UP_ARROW);
+   
        managerSounds.stopSound('movetank');
        managerSounds.playSound('engine',true);
    }
@@ -96,7 +96,7 @@ class Tank {
         this.w = this.img.width;
         this.h=this.img.height;
         this.linearSpeed = 2;
-        this.rotationSpeed = 0.05;
+        this.rotationSpeed = 0.08;
         this.rotation = 0;
         this.rSpeed = 0;
         this.xMove = 0;
@@ -117,8 +117,7 @@ class Tank {
             }
             this.rSpeed = dr;
         }
-       
-        if (keyIsDown(DOWN_ARROW) && (keyIsDown(LEFT_ARROW) || keyIsDown(RIGHT_ARROW))) {
+        else if (keyIsDown(DOWN_ARROW) && (keyIsDown(LEFT_ARROW) || keyIsDown(RIGHT_ARROW))) {
             let dr = 0;
             if (keyIsDown(LEFT_ARROW)) {
                 dr += this.rotationSpeed
@@ -134,10 +133,9 @@ class Tank {
             this.yMove += (keyIsDown(UP_ARROW)===true?1:(-1))*this.linearSpeed * sin(this.rotation);
             managerSounds.stopSound('engine');
             managerSounds.playSound('movetank',true);
-         
             
         }
-        
+       
 
     }
     
@@ -195,7 +193,7 @@ class Tank {
         strokeWeight(2);
         rotate(this.rotation);
         image(this.img, -this.w / 2, -this.w / 2);
-        rect(-this.w / 4, -this.w / 4, this.w/2, this.w/2);
+        // rect(-this.w / 4, -this.w / 4, this.w/2, this.w/2);
         stroke(0, 0, 255);
         pop();
         strokeWeight(8);

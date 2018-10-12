@@ -43,6 +43,10 @@
         if (!sound.isPlaying()) {
             sound.play();
             if (loop) {
+                if(this.intervals[thesound]){
+
+                    clearInterval(this.intervals[thesound]);
+                }
                 this.intervals[thesound] = setInterval(function () { sound.play(); }, sound.duration() * 1000 - 500);
             }
         }

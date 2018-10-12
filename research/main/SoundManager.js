@@ -12,11 +12,11 @@
             return this.soundsMusica[Object.keys(this.soundsMusica)[n]];
         }
     }
-    static getInstance() {
-        if (!SoundManager.instance) {
-            SoundManager.instance = new SoundManager();
+    static get Instance() {
+        if (this._instance === undefined) {
+            this._instance = new SoundManager();
         }
-        return SoundManager.instance;
+        return this._instance;
     }
 
     registerSounds(nameSound, sound, type) {

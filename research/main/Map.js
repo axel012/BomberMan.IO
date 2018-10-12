@@ -15,6 +15,8 @@ class Map {
                 this.map3DTiles[i][j] = [];
             }
         }
+
+		this.mapIMG = createGraphics(width,height);
         this.collidables = map.layers[0].objects;
         for (let l = 0; l < this.layers.length; ++l) {
             if (this.layers[l].type === "objectgroup") {
@@ -24,60 +26,39 @@ class Map {
                 for (let c = 0; c < this.numCols; ++c) {
                     let index = c + r * (this.numCols);
                     let idImg = this.layers[l].data[index] - 1;
-                    let x = r * Tile.SIZE;
-                    let y = c * Tile.SIZE;
-                    let collidable = this.collidables.filter((c) => c.x === x && c.y === y);
+                    let x = r;
+                    let y = c;
+                   //this.collidables.filter((c) => c.x === x && c.y === y);
                     let breakable = true;
                     let resistance = 0;
-                    if (collidable[0] !== undefined) {
-                        breakable = collidable[0].properties.unbreakable;
-                        resistance = collidable[0].properties.resistance;
-                    }
+                    //if (collidable[0] !== undefined) {
+                    //    breakable = collidable[0].properties.unbreakable;
+                    //    resistance = collidable[0].properties.resistance;
+                   // }
                     this.map3DTiles[r][c][l] = new Tile(idImg, x, y, breakable, resistance);
                 }
             }
         }
+		 let collidable = {};
+			for(let c = 0;c<this.collidables.length;c++){
+				collidable[this.collidables[c].id] = this.collidables[c];
+			}
+			this.data = collidable;
+			//liberar memoria
+		    delete this.collidables;
     }
 
-    /*esto hay q cambiarlo lo hice asi nomas para safar pero habria que preguntar dada la posicion si los tres tiles son no collidabgles
-    * osea el tile de esa posicion de cada capa en el arreglo map3d para cuando en el futuro tengamos que elmiinar blockes a tiros
-    * podamos mostrar el tile del background */
-    static getThereACollidable(x, y, w, h) {
-        let collidableX = (posX) => { return Math.trunc(posX / Tile.SIZE) };
-        let collidableY = (posY) => {return  Math.trunc(posY / Tile.SIZE) };
-
-        // let index = c + r * (this.numCols);
-        for (let l = 0; l < this.map3DTiles[0][0].length; ++l) {
-            let c;
-            let points = [{ px: x - w / 2, py: y - h / 2 }, { px: x + w / 2, py: y - h / 2 }, { px: x - w / 2, py: y + h / 2 }, { px: x + w / 2, py: y + h / 2 }]
-            for (let i = 0; i < points.length; ++i) {
-                c = this.map3DTiles[collidableY(points[i].py) ][collidableX(points[i].px)][l];
-                // c = this.collidables[collidableY(points[i].py) + collidableX(points[i].px) * this.numCols];
-                // if (c !== undefined && (c.x <= (points[i].px) && (c.x + Tile.SIZE) >= (points[i].px) && c.y <= (points[i].py) && (c.y + Tile.SIZE) >= (points[i].py))) {
-                //     return c;
-                // }
-                if(c!==undefined && !c.walkable){
-                    return c;
-                }
-            }
-        }
-        return null;
-
-        // let collidable = this.collidables.filter((c) => {
-        //     return (c.x <= (x-w/2) && (c.x + Tile.SIZE) >= (x-w/2) && c.y <= (y-h/2) && (c.y + Tile.SIZE) >= (y-h/2))
-        //     ||
-        //     (c.x <= (x-w/2) && (c.x + Tile.SIZE) >= (x-w/2) && c.y <= (y+h/2) && (c.y + Tile.SIZE) >= (y+h/2))
-        //     ||
-        //     (c.x <= (x+w/2) && (c.x + Tile.SIZE) >= (x+w/2) && c.y <= (y-h/2) && (c.y + Tile.SIZE) >= (y-h/2))
-
-        //     ||
-        //     (c.x <= (x+w/2) && (c.x + Tile.SIZE) >= (x+w/2) && c.y <= (y+h/2) && (c.y + Tile.SIZE) >= (y+h/2))
-
-        // });
-        // if (collidable[0] !== undefined) {
-        //     return collidable[0] ;
-        // }
-
+  /* DEJAME A MI LAS COLISIONES PIBE*/
+    static getTileByPos(x,y){
+		//0 object layer
+		let tx = Math.floor(x);
+		let ty = Math.floor(y);
+		if(tx > this.numRows || ty > this.numCols || tx < 0 || ty < 0) return null;
+		let data = [];
+		for(var l = 1;l < this.layers.length;l++){
+			data.push(this.map3DTiles[tx][ty][l]);
+		}
+		return data;
     }
 
     static loadSpritesTiles(map) {
@@ -126,10 +107,7 @@ class Map {
         let xo = (width - this.numRows * this.scl * Tile.SIZE) / 2;
         translate(xo, 0);
         translate(-camera.xOffset * Tile.SIZE, -camera.yOffset * Tile.SIZE);
-
-        if (this.hasChanges) {
-            this.hasChanges = false;
-            this.backgroundImage = createImage(Map.numRows * Tile.SIZE, Map.numCols * Tile.SIZE);
+		
             /*let minX = floor(max(0, camera.xOffset));
             let minY = floor(max(0, camera.yOffset));
             let maxX = floor(min(this.mapWidth, camera.xOffset + camera.viewPortWidth + 1));
@@ -149,6 +127,12 @@ class Map {
                     }
                 }
             }*/
+			
+			if(this.hasChanges){
+				console.log("render");
+				this.hasChanges = false;
+				this.mapIMG.beginShape();
+				this.mapIMG.clear();
             for (let l = 0; l < this.layers.length; ++l) {
                 if (this.layers[l].type === "objectgroup") {
                     continue;
@@ -158,14 +142,16 @@ class Map {
                         let index = c + r * (this.numCols);
                         let idImg = this.layers[l].data[index] - 2;
                         if (idImg < 0) { continue };
-                        this.backgroundImage.blend(TileManager.getTileImage(idImg), 0, 0, Tile.SIZE, Tile.SIZE, c * Tile.SIZE, r * Tile.SIZE, Tile.SIZE, Tile.SIZE, BLEND);
+                        this.map3DTiles[r][c][l].render(this.mapIMG);
+						//this.backgroundImage.blend(TileManager.getTileImage(idImg), 0, 0, Tile.SIZE, Tile.SIZE, c * Tile.SIZE, r * Tile.SIZE, Tile.SIZE, Tile.SIZE, BLEND);
                     }
                 }
             }
+			this.mapIMG.endShape();
         }
-        else {
-            image(this.backgroundImage, 0, 0, Map.numCols * Tile.SIZE, Map.numRows * Tile.SIZE);
-        }
+		  image(this.mapIMG,0,0);
+		}
+    
 
-    }
+    
 }

@@ -44,7 +44,12 @@ class Tile {
         this.resistance = resistance;
     }
 
-    render() {
-        image(TileManager.getTileImage(this.idImg), this.posX * Tile.SIZE, this.posY * Tile.SIZE);
+    render(g) {
+        g.image(TileManager.getTileImage(this.idImg), this.posX * Tile.SIZE, this.posY * Tile.SIZE);
+		// g.fill(255,0,0);
+		// g.textSize(15);
+		// g.textAlign(CENTER,CENTER);
+	
+		// g.text(this.idImg,this.posX * Tile.SIZE,this.posY * Tile.SIZE,Tile.SIZE,Tile.SIZE);
     }
 }

@@ -23,8 +23,8 @@ function keyReleased(){
    
    if(keyCode===UP_ARROW || keyCode===DOWN_ARROW){
    
-    SoundManager.Instance.stopSound('movetank');
-    SoundManager.Instance.playSound('engine',true);
+  //  SoundManager.Instance.stopSound('movetank');
+  //  SoundManager.Instance.playSound('engine',true);
    }
    return false;
 }
@@ -69,13 +69,11 @@ class Tank {
                 dr -= this.rotationSpeed;
             }
             this.rSpeed = dr;
-        }
-       
-        if(keyIsDown(DOWN_ARROW) || keyIsDown(UP_ARROW)){
+        }else if(keyIsDown(DOWN_ARROW) || keyIsDown(UP_ARROW)){
             this.xMove += (keyIsDown(UP_ARROW)===true?1:(-1))*this.linearSpeed * cos(this.rotation);
             this.yMove += (keyIsDown(UP_ARROW)===true?1:(-1))*this.linearSpeed * sin(this.rotation);
-            SoundManager.Instance.stopSound('engine');
-            SoundManager.Instance.playSound('movetank',true);
+       //     SoundManager.Instance.stopSound('engine');
+        //    SoundManager.Instance.playSound('movetank',true);
             
         }
        
@@ -151,7 +149,9 @@ class Tank {
 }
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
+
+	resizeCanvas(windowWidth*0.95, windowHeight*0.95);
     Map.onResize();
+	
   }
   

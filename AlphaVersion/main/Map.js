@@ -7,8 +7,8 @@ class Map {
         this.numRows = map.width;
         this.numCols = map.height;
         this.loadSpritesTiles(map);
-       // this.backgroundImage = {};
-       this.backgroundImage = {};
+
+       this.backgroundImage;
        this.map3DTiles = [];
         for (let i = 0; i < this.numRows; ++i) {
             this.map3DTiles[i] = [];
@@ -38,6 +38,7 @@ class Map {
                 }
             }
         }
+		
     }
 
     /*esto hay q cambiarlo lo hice asi nomas para safar pero habria que preguntar dada la posicion si los tres tiles son no collidabgles
@@ -114,31 +115,31 @@ class Map {
     }*/
 
     static onResize() {
-        console.log("resize");
+        
         if (height < width) {
             this.scl = height / (this.numRows * Tile.SIZE);;
         }
         else {
             this.scl = width / (this.numCols * Tile.SIZE);
         }
-        this.backgroundImage = createImage(Map.numRows * Tile.SIZE * this.scl, Map.numCols * Tile.SIZE * this.scl);
+        this.backgroundImage = createGraphics(Math.floor(Map.numRows * Tile.SIZE * this.scl),Math.floor(Map.numCols * Tile.SIZE * this.scl));
         this.hasChanges = true;
     }
 
 
     static render(camera) {
-      
+      if(this.backgroundImage === undefined) return;
         let xo = (width - this.numRows * this.scl * Tile.SIZE) / 2;
      
-    //    translate(xo, 0);
-     //   translate(-camera.xOffset * Tile.SIZE, -camera.yOffset * Tile.SIZE);
+      translate(xo, 0);
+      translate(-camera.xOffset * Tile.SIZE, -camera.yOffset * Tile.SIZE);
        /*
         let minX = floor(max(0, camera.xOffset));
         let minY = floor(max(0, camera.yOffset));
         let maxX = floor(min(this.numRows, camera.xOffset + camera.viewPortWidth +1));
         let maxY = floor(min(this.numCols, camera.yOffset + camera.viewPortHeight + 1));
-*/
-
+*/	
+		//scale(this.scl);
         
          if (this.hasChanges) {
             this.hasChanges = false;
@@ -154,7 +155,8 @@ class Map {
         }
         image(this.backgroundImage,0,0);
         */
-          this.backgroundImage = createImage(Map.numRows * Tile.SIZE, Map.numCols * Tile.SIZE);
+          //this.backgroundImage = createImage(Map.numRows * Tile.SIZE, Map.numCols * Tile.SIZE);
+          //this.backgroundImage = createImage(Map.numRows * Tile.SIZE, Map.numCols * Tile.SIZE);
             /*let minX = floor(max(0, camera.xOffset));
             let minY = floor(max(0, camera.yOffset));
             let maxX = floor(min(this.mapWidth, camera.xOffset + camera.viewPortWidth + 1));
@@ -174,6 +176,8 @@ class Map {
                     }
                 }
             }*/
+
+			this.backgroundImage.beginShape();
             for (let l = 0; l < this.layers.length; ++l) {
                 if (this.layers[l].type === "objectgroup") {
                     continue;
@@ -183,17 +187,16 @@ class Map {
                         let index = c + r * (this.numCols);
                         let idImg = this.layers[l].data[index] - 2;
                         if (idImg < 0) { continue };
-                      this.backgroundImage.blend(TileManager.getTileImage(idImg), 0, 0, Tile.SIZE, Tile.SIZE, c * Tile.SIZE, r * Tile.SIZE, Tile.SIZE, Tile.SIZE, BLEND);
+                      this.backgroundImage.image(TileManager.getTileImage(idImg),c * Tile.SIZE * this.scl,r*Tile.SIZE*this.scl,Tile.SIZE*this.scl,Tile.SIZE*this.scl);
                     }
                 }
             }
-            console.log("render");
+			this.backgroundImage.endShape();
+        
         }
 
-        else {
- //           scale(this.scl);
-            image(this.backgroundImage, 0, 0);
-        }
+        image(this.backgroundImage, 0, 0);
+		scale(this.scl);
     }
 
     

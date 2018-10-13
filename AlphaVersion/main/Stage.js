@@ -47,12 +47,11 @@ class Stage{
 	initialize(){
 	let cnv = createCanvas(windowWidth * 0.9, windowHeight * 0.9);
     let x = (windowWidth - width) / 2;
-    let y = (windowHeight - height) / 2;
-    cnv.position(x, y);  
+	cnv.position(x, 0);  
    // tank = new Tank(width / 2, height / 2);
-
+/*
       SoundManager.Instance.registerSounds("sound1",Assets.get("sound1"),SoundManager.TYPESOUND.MUSIC);
-     SoundManager.Instance.registerSounds("sound2",Assets.get("sound2"),SoundManager.TYPESOUND.MUSIC);
+	  SoundManager.Instance.registerSounds("sound2",Assets.get("sound2"),SoundManager.TYPESOUND.MUSIC);
       SoundManager.Instance.registerSounds("sound3",Assets.get("sound3"),SoundManager.TYPESOUND.MUSIC);
       SoundManager.Instance.registerSounds("sound4",Assets.get("sound4"),SoundManager.TYPESOUND.MUSIC);
       SoundManager.Instance.registerSounds("sound5",Assets.get("sound5"),SoundManager.TYPESOUND.MUSIC);
@@ -60,13 +59,19 @@ class Stage{
       SoundManager.Instance.registerSounds("engine",Assets.get("engine"),SoundManager.TYPESOUND.EFFECT);
       SoundManager.Instance.registerSounds("movetank",Assets.get("movetank"),SoundManager.TYPESOUND.EFFECT);
       SoundManager.Instance.playSound("engine",true);
+	  */
 	  this.camera = new Camera(Assets.get("map").width, Assets.get("map").height);
 	  Map.load(Assets.get("map"));
 	  this.addMainPlayer(new Tank(2*Tile.SIZE, 2 * Tile.SIZE));
+	  
+	  resizeCanvas(windowWidth*0.95, windowHeight*0.95);
+	  Map.onResize();
+	 
 	}
 	
 	render(){
 		  background(0);
+		  push();
 		  Map.render(this.camera);
 		for(var i=0;i<this.players.length;i++){
 			if(this.players[i] === this.mainPlayer) continue;
@@ -79,6 +84,12 @@ class Stage{
 		for(var i=0;i<this.bullets.length;i++){
 			this.bullets[i].render();
 		}
+		fill(255);
+		noStroke();
+		textSize(12);
+		text(floor(frameRate()),50,50);
+		pop();
+
 	}
 	
 	update(dt){

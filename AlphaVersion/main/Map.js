@@ -7,8 +7,9 @@ class Map {
         this.numRows = map.width;
         this.numCols = map.height;
         this.loadSpritesTiles(map);
-        this.backgroundImage = {};
-        this.map3DTiles = [];
+       // this.backgroundImage = {};
+       this.backgroundImage = {};
+       this.map3DTiles = [];
         for (let i = 0; i < this.numRows; ++i) {
             this.map3DTiles[i] = [];
             for (let j = 0; j < this.numCols; ++j) {
@@ -51,7 +52,7 @@ class Map {
             let c;
             let points = [{ px: x - w / 2, py: y - h / 2 }, { px: x + w / 2, py: y - h / 2 }, { px: x - w / 2, py: y + h / 2 }, { px: x + w / 2, py: y + h / 2 }]
             for (let i = 0; i < points.length; ++i) {
-                c = this.map3DTiles[collidableY(points[i].py) ][collidableX(points[i].px)][l];
+                c = this.map3DTiles[collidableY(points[i].py)][collidableX(points[i].px)][l];
                 // c = this.collidables[collidableY(points[i].py) + collidableX(points[i].px) * this.numCols];
                 // if (c !== undefined && (c.x <= (points[i].px) && (c.x + Tile.SIZE) >= (points[i].px) && c.y <= (points[i].py) && (c.y + Tile.SIZE) >= (points[i].py))) {
                 //     return c;
@@ -90,6 +91,8 @@ class Map {
             }
         }
     }
+
+
     /*static load(map) {
         this.layers = map.layers;
         this.mapWidth = map.width;
@@ -111,25 +114,47 @@ class Map {
     }*/
 
     static onResize() {
+        console.log("resize");
         if (height < width) {
-            this.scl = height / (camera.viewPortHeight * Tile.SIZE);
+            this.scl = height / (this.numRows * Tile.SIZE);;
         }
         else {
-            this.scl = width / (this.numRows * Tile.SIZE);
+            this.scl = width / (this.numCols * Tile.SIZE);
         }
-
-
+        this.backgroundImage = createImage(Map.numRows * Tile.SIZE * this.scl, Map.numCols * Tile.SIZE * this.scl);
+        this.hasChanges = true;
     }
 
+
     static render(camera) {
-
+      
         let xo = (width - this.numRows * this.scl * Tile.SIZE) / 2;
-        translate(xo, 0);
-        translate(-camera.xOffset * Tile.SIZE, -camera.yOffset * Tile.SIZE);
+     
+    //    translate(xo, 0);
+     //   translate(-camera.xOffset * Tile.SIZE, -camera.yOffset * Tile.SIZE);
+       /*
+        let minX = floor(max(0, camera.xOffset));
+        let minY = floor(max(0, camera.yOffset));
+        let maxX = floor(min(this.numRows, camera.xOffset + camera.viewPortWidth +1));
+        let maxY = floor(min(this.numCols, camera.yOffset + camera.viewPortHeight + 1));
+*/
 
-        if (this.hasChanges) {
+        
+         if (this.hasChanges) {
             this.hasChanges = false;
-            this.backgroundImage = createImage(Map.numRows * Tile.SIZE, Map.numCols * Tile.SIZE);
+  /*           this.backgroundImage.beginShape();
+             for (let l = 1; l < this.layers.length; l++) {
+                for (let y = minY; y < maxY; y++) {
+                    for (let x = minX; x < maxX; x++) {
+                        this.map3DTiles[x][y][l].render(this.backgroundImage);
+                    }
+                }
+         }
+         this.backgroundImage.endShape();
+        }
+        image(this.backgroundImage,0,0);
+        */
+          this.backgroundImage = createImage(Map.numRows * Tile.SIZE, Map.numCols * Tile.SIZE);
             /*let minX = floor(max(0, camera.xOffset));
             let minY = floor(max(0, camera.yOffset));
             let maxX = floor(min(this.mapWidth, camera.xOffset + camera.viewPortWidth + 1));
@@ -158,14 +183,18 @@ class Map {
                         let index = c + r * (this.numCols);
                         let idImg = this.layers[l].data[index] - 2;
                         if (idImg < 0) { continue };
-                        this.backgroundImage.blend(TileManager.getTileImage(idImg), 0, 0, Tile.SIZE, Tile.SIZE, c * Tile.SIZE, r * Tile.SIZE, Tile.SIZE, Tile.SIZE, BLEND);
+                      this.backgroundImage.blend(TileManager.getTileImage(idImg), 0, 0, Tile.SIZE, Tile.SIZE, c * Tile.SIZE, r * Tile.SIZE, Tile.SIZE, Tile.SIZE, BLEND);
                     }
                 }
             }
-        }
-        else {
-            image(this.backgroundImage, 0, 0, Map.numCols * Tile.SIZE, Map.numRows * Tile.SIZE);
+            console.log("render");
         }
 
+        else {
+ //           scale(this.scl);
+            image(this.backgroundImage, 0, 0);
+        }
     }
+
+    
 }

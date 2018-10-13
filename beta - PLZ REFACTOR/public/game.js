@@ -120,14 +120,31 @@ class Camera {
         this.applyBounds();
         }
 
-          followEntity(e){
-            this.xOffset = ((e.x - ((width/2)/Map.scl))/Tile.SIZE);
-            
-          //  yOffset = e.getY() - handler.getHeight()/2 + e.getHeight()/2;
-          this.applyBounds();
-        }
+        
 
-    
+    fix(){
+		if(this.xOffset < 0)
+			this.xOffset = 0;
+		else if(this.xOffset > Map.mapWidth - width/Tile.SIZE){
+			this.xOffset = 0;
+		}
+		if(this.yOffset < 0)
+			this.yOffset = 0;
+		else if(this.yOffset > Map.mapHeight - height/Tile.SIZE){
+			this.yOffset = Map.mapHeight - height/Tile.SIZE
+		}
+	}
+
+/*    move(amtX, amtY) {
+        this.xOffset += amtX;
+        this.yOffset += amtY;
+        }*/
+
+    followEntity(e){
+		this.xOffset = (e.x - (width/2)/Tile.SIZE);
+		this.yOffset = (e.y - (height/2)/Tile.SIZE);
+		this.fix();
+	}
         /*
         if(yOffset < 0){
             yOffset = 0;
@@ -147,7 +164,7 @@ class Stage {
         this.entities = [];
         this.players = [];
         this.keyListeners = [];
-        this.camera = new Camera(15, 15);
+        this.camera = new Camera(5, 5);
 //        console.log(this.camera);
 //        this.player = new Player(50,50);
  //       this.addEntity(this.player);
@@ -215,8 +232,9 @@ class Stage {
     update(dt) {
         for (let p of this.players) {
             p.update(dt);
-   
+   	this.camera.followEntity(p);
         }
+	
         //for(let e of this.entities){
         //    e.update();
         //}
@@ -291,6 +309,7 @@ class Player extends Entity {
     move(){
         this.moveX();
         this.moveY();
+		camera.followEntity(this);
     }
         
         moveX(){
@@ -778,6 +797,7 @@ function draw() {
     stage.render();
     let dt = millis() - lastTime;
     stage.update(dt);
+
     lastTime = millis();
     //stage.camera.move(0.05,0);
 }

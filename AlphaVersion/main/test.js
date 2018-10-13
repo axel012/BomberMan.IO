@@ -5,96 +5,39 @@ let cnv;
 let camera;
 
 function preload() {
-    Assets.initialize();
-
-    Assets.registerAsset("movetank", loadSound("sounds/movetank.mp3"));
-    Assets.registerAsset("engine", loadSound("sounds/engine.mp3"));
-    Assets.registerAsset("sound1", loadSound("sounds/sound1.mp3"));
-    Assets.registerAsset("sound2", loadSound("sounds/sound2.mp3"));
-    Assets.registerAsset("sound3", loadSound("sounds/sound3.mp3"));
-    Assets.registerAsset("sound4", loadSound("sounds/sound4.mp3"));
-    Assets.registerAsset("sound5", loadSound("sounds/sound5.mp3"));
-    Assets.registerAsset("sound6", loadSound("sounds/sound6.mp3"));
-    Assets.registerAsset("redtank", loadImage("redtank.png"));
-    Assets.registerAsset("map", loadJSON("maps/mapa1.json"));
-    Assets.registerAsset("tileset", loadImage("maps/tileset.png"));
-    Assets.registerAsset("bgTiles", loadImage("maps/bgTiles.png"));
-    Assets.registerAsset("blockTiles", loadImage("maps/blockTiles.png"));
+  Stage.Instance.preloadAssets();
 }
 
 function setup() {
-    cnv = createCanvas(windowWidth * 0.9, windowHeight * 0.9);
-    let x = (windowWidth - width) / 2;
-    let y = (windowHeight - height) / 2;
-    cnv.position(x, y);
-    tanksp = Assets.get("redtank");
-    let img = tanksp.get(0, 32 * 3, 32, 32);
-    tank = new Tank(img, width / 2, height / 2);
-    managerSounds = SoundManager.getInstance();
-    managerSounds.registerSounds("sound1",Assets.get("sound1"),SoundManager.TYPESOUND.MUSIC);
-    managerSounds.registerSounds("sound2",Assets.get("sound2"),SoundManager.TYPESOUND.MUSIC);
-    managerSounds.registerSounds("sound3",Assets.get("sound3"),SoundManager.TYPESOUND.MUSIC);
-    managerSounds.registerSounds("sound4",Assets.get("sound4"),SoundManager.TYPESOUND.MUSIC);
-    managerSounds.registerSounds("sound5",Assets.get("sound5"),SoundManager.TYPESOUND.MUSIC);
-    managerSounds.registerSounds("sound6",Assets.get("sound6"),SoundManager.TYPESOUND.MUSIC);
-    managerSounds.registerSounds("engine",Assets.get("engine"),SoundManager.TYPESOUND.EFFECT);
-    managerSounds.registerSounds("movetank",Assets.get("movetank"),SoundManager.TYPESOUND.EFFECT);
-
-    managerSounds.playSound("engine",true);
-    // managerSounds.playSounds();
-  /*  loadTiles();*/
-    camera = new Camera(Assets.get("map").width, Assets.get("map").height);
-    Map.load(Assets.get("map"));
+   Stage.Instance.initialize();
 
 }
 
-/*function loadTiles() {
-    let tilesprite = Assets.get("tileset");
-    const nonwalkableTiles = [6, 8, 9, 10, 21, 23, 24, 25, 36, 37, 38, 39, 40, 47, 48, 55, 56, 57, 58, 59];
-    const biggerThan = 61;
-    let index = 0;
-    for (let y = 0; y < tilesprite.height; y += Tile.SIZE) {
-        for (let x = 0; x < tilesprite.width; x += Tile.SIZE) {
-            let walkable = true;
-            if (nonwalkableTiles.indexOf(index) !== -1) {
-                walkable = false;
-            }
-            TileManager.registerTile(tilesprite.get(x, y, Tile.SIZE, Tile.SIZE), walkable);
-            index++;
-        }
-    }
-}*/
 
 function draw() {
-    background(0);
-
-    Map.render(camera);
-    // Map.render();
-    tank.handleKeys();
-    tank.update();
-    tank.display();
-    noStroke();
-    fill(255);
-    text(frameRate(), 50, 50);
+   Stage.Instance.update(0);
+   Stage.Instance.render();
 }
 
 function keyReleased(){
    
    if(keyCode===UP_ARROW || keyCode===DOWN_ARROW){
    
-       managerSounds.stopSound('movetank');
-       managerSounds.playSound('engine',true);
+    SoundManager.Instance.stopSound('movetank');
+    SoundManager.Instance.playSound('engine',true);
    }
    return false;
 }
 
 class Tank {
-    constructor(img, x, y) {
-        this.x = x;
-        this.img = img;
-        this.y = y;
+    constructor(x, y) {
+     
+        this.img = Assets.get("redtank").get(0, 32 * 3, 32, 32);
+       
         this.w = this.img.width;
         this.h=this.img.height;
+        this.y = y + this.w / 2;
+        this.x = x + this.h;
         this.linearSpeed = 2;
         this.rotationSpeed = 0.08;
         this.rotation = 0;
@@ -131,8 +74,8 @@ class Tank {
         if(keyIsDown(DOWN_ARROW) || keyIsDown(UP_ARROW)){
             this.xMove += (keyIsDown(UP_ARROW)===true?1:(-1))*this.linearSpeed * cos(this.rotation);
             this.yMove += (keyIsDown(UP_ARROW)===true?1:(-1))*this.linearSpeed * sin(this.rotation);
-            managerSounds.stopSound('engine');
-            managerSounds.playSound('movetank',true);
+            SoundManager.Instance.stopSound('engine');
+            SoundManager.Instance.playSound('movetank',true);
             
         }
        
@@ -182,12 +125,13 @@ class Tank {
             this.rotation+=this.rSpeed*(this.xMove*this.yMove)*(distb>dislr?-1:1);*/
         }
 
-        camera.followEntity(this);
+        Stage.Instance.camera.followEntity(this);
     }
 
-    display() {
+    render() {
         push();
         translate(this.x, this.y);
+        //translate(this.w/2,this.w/2);
         noFill();
         stroke(0, 255, 0);
         strokeWeight(2);
@@ -205,3 +149,9 @@ class Tank {
         noFill();
     }
 }
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+    Map.onResize();
+  }
+  

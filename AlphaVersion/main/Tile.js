@@ -1,16 +1,5 @@
 class TileManager {
 
-    static registerTile(idImg, x, y, breakable, resistance) {
-        if (this.tiles === undefined) {
-            this.tiles = [];
-        }
-        this.tiles.push(new Tile(idImg, x, y, breakable, resistance));
-    }
-
-    static getTile(id) {
-        return this.tiles[id];
-    }
-
     static registerTileImage(img) {
         if (this.imagesTiles === undefined) {
             this.imagesTiles = [];
@@ -44,7 +33,7 @@ class Tile {
         this.resistance = resistance;
     }
 
-    render() {
-        image(TileManager.getTileImage(this.idImg), this.posX * Tile.SIZE, this.posY * Tile.SIZE);
+    render(id) {
+        image(TileManager.getTileImage(id), this.posX * Tile.SIZE, this.posY * Tile.SIZE);
     }
 }

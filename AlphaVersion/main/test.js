@@ -23,7 +23,7 @@ function preload() {
 }
 
 function setup() {
-    cnv = createCanvas(windowWidth * 0.9, windowHeight * 0.9);
+    cnv = createCanvas(windowWidth * 0.5, windowHeight * 0.5);
     let x = (windowWidth - width) / 2;
     let y = (windowHeight - height) / 2;
     cnv.position(x, y);

@@ -25,6 +25,7 @@ class Camera {
         }*/
 
     followEntity(e){
+		console.log(width);
 		this.xOffset = (e.x - width/2)/Tile.SIZE;
 		this.yOffset = (e.y - height/2)/Tile.SIZE;
 		this.fix();

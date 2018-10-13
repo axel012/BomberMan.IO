@@ -39,7 +39,8 @@
     }
 
     playSound(thesound, loop) {
-        let sound = this.soundsEffects[thesound];
+       
+        let sound=this.soundsEffects[thesound];
         if (!sound.isPlaying()) {
             sound.play();
             if (loop) {
@@ -54,8 +55,9 @@
     }
 
     stopSound(thesound) {
-        this.soundsEffects[thesound].stop();
         clearInterval(this.intervals[thesound]);
+        this.soundsEffects[thesound].stop();
+        
     }
 
     playSounds() {

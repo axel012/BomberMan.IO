@@ -48,7 +48,7 @@
 
                     clearInterval(this.intervals[thesound]);
                 }
-                this.intervals[thesound] = setInterval(function () { sound.play(); }, sound.duration() * 1000 - 500);
+                this.intervals[thesound] = setInterval(function () { sound.play(); }, sound.duration() * 1000 -300);
             }
         }
 

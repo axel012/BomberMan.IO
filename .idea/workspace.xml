@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1358bfa9-ee6b-4a54-8064-36953c6d98c6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/AlphaVersion/main/Stage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AlphaVersion/main/Camera.js" beforeDir="false" afterPath="$PROJECT_DIR$/AlphaVersion/main/Camera.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AlphaVersion/main/Map.js" beforeDir="false" afterPath="$PROJECT_DIR$/AlphaVersion/main/Map.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AlphaVersion/main/SoundManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/AlphaVersion/main/SoundManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AlphaVersion/main/Tile.js" beforeDir="false" afterPath="$PROJECT_DIR$/AlphaVersion/main/Tile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AlphaVersion/main/Stage.js" beforeDir="false" afterPath="$PROJECT_DIR$/AlphaVersion/main/Stage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AlphaVersion/main/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/AlphaVersion/main/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AlphaVersion/main/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/AlphaVersion/main/test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/beta - PLZ REFACTOR/public/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/beta - PLZ REFACTOR/public/game.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -40,52 +39,102 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="html" value="105" />
-          <entry key="js" value="5547" />
+          <entry key="css" value="9" />
+          <entry key="html" value="115" />
+          <entry key="js" value="6464" />
           <entry key="ts" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="105" />
-          <entry key="JavaScript" value="5547" />
+          <entry key="CSS" value="9" />
+          <entry key="HTML" value="115" />
+          <entry key="JavaScript" value="6464" />
           <entry key="TypeScript" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="html" value="6" />
-          <entry key="js" value="28" />
+          <entry key="css" value="2" />
+          <entry key="html" value="8" />
+          <entry key="js" value="35" />
           <entry key="png" value="1" />
           <entry key="txt" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="HTML" value="6" />
+          <entry key="CSS" value="2" />
+          <entry key="HTML" value="8" />
           <entry key="Image" value="1" />
-          <entry key="JavaScript" value="28" />
+          <entry key="JavaScript" value="34" />
           <entry key="PLAIN_TEXT" value="3" />
+          <entry key="UML" value="1" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AlphaVersion/main/test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="149" column="1" lean-forward="true" selection-start-line="149" selection-start-column="1" selection-end-line="149" selection-end-column="1" />
+            <state relative-caret-position="138">
+              <caret line="24" column="7" lean-forward="true" selection-start-line="24" selection-start-column="4" selection-end-line="25" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AlphaVersion/main/Map.js">
+        <entry file="file://$PROJECT_DIR$/AlphaVersion/main/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="138">
+              <caret line="6" column="72" lean-forward="true" selection-start-line="6" selection-start-column="72" selection-end-line="6" selection-end-column="72" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AlphaVersion/main/Stage.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="299">
-              <caret line="130" lean-forward="true" selection-start-line="130" selection-end-line="130" />
+              <caret line="52" column="26" lean-forward="true" selection-start-line="52" selection-start-column="26" selection-end-line="52" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AlphaVersion/main/SoundManager.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="137">
+              <caret line="50" column="112" selection-start-line="50" selection-start-column="112" selection-end-line="50" selection-end-column="112" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AlphaVersion/main/main.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="23">
+              <caret line="1" column="23" lean-forward="true" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AlphaVersion/main/Camera.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="437">
+              <caret line="19" column="7" lean-forward="true" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AlphaVersion/main/Map.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="62" column="28" selection-start-line="62" selection-start-column="28" selection-end-line="62" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -107,7 +156,13 @@
         <option value="$PROJECT_DIR$/research/main/index.html" />
         <option value="$PROJECT_DIR$/research/main/test.js" />
         <option value="$PROJECT_DIR$/research/main/SoundManager.js" />
+        <option value="$PROJECT_DIR$/AlphaVersion/main/Camera.js" />
+        <option value="$PROJECT_DIR$/AlphaVersion/main/index.html" />
+        <option value="$PROJECT_DIR$/AlphaVersion/main/main.css" />
         <option value="$PROJECT_DIR$/AlphaVersion/main/test.js" />
+        <option value="$PROJECT_DIR$/AlphaVersion/main/Stage.js" />
+        <option value="$PROJECT_DIR$/AlphaVersion/main/SoundManager.js" />
+        <option value="$PROJECT_DIR$/AlphaVersion/main/Map.js" />
       </list>
     </option>
   </component>
@@ -163,6 +218,9 @@
     <property name="typescript-compiler-editor-notification" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/AlphaVersion/main" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/research" />
       <recent name="$PROJECT_DIR$/research/main" />
@@ -196,12 +254,12 @@
       <workItem from="1538943476601" duration="24895000" />
       <workItem from="1539033457661" duration="16542000" />
       <workItem from="1539057317088" duration="14723000" />
-      <workItem from="1539471452353" duration="1840000" />
+      <workItem from="1539471452353" duration="29977000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="88949000" />
+    <option name="totallyTimeSpent" value="117086000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="46" y="-11" width="1315" height="780" extended-state="6" />
@@ -329,17 +387,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AlphaVersion/main/Map.js">
+    <entry file="file://$PROJECT_DIR$/AlphaVersion/main/p5.sound.min.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="130" lean-forward="true" selection-start-line="130" selection-end-line="130" />
+        <state>
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlphaVersion/main/p5.min.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlphaVersion/main/p5.dom.min.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="uml://JavaScript-modules-diagram//home/lopa/Angular/Tp2GameLopaVazq/BomberMan.IO/AlphaVersion/main/Stage.js">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JavaScript-modules-diagram</ID>
+          <OriginalElement>$PROJECT_DIR$/AlphaVersion/main/Stage.js</OriginalElement>
+          <nodes />
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="645.0" y="286.5" />
+          <SelectedNodes />
+          <Categories>
+            <Category>All</Category>
+          </Categories>
+          <VISIBILITY>Details</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlphaVersion/main/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="6" column="72" lean-forward="true" selection-start-line="6" selection-start-column="72" selection-end-line="6" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlphaVersion/main/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="1" column="23" lean-forward="true" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AlphaVersion/main/test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="149" column="1" lean-forward="true" selection-start-line="149" selection-start-column="1" selection-end-line="149" selection-end-column="1" />
+        <state relative-caret-position="138">
+          <caret line="24" column="7" lean-forward="true" selection-start-line="24" selection-start-column="4" selection-end-line="25" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlphaVersion/main/Camera.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="19" column="7" lean-forward="true" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlphaVersion/main/Stage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="52" column="26" lean-forward="true" selection-start-line="52" selection-start-column="26" selection-end-line="52" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlphaVersion/main/SoundManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="50" column="112" selection-start-line="50" selection-start-column="112" selection-end-line="50" selection-end-column="112" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlphaVersion/main/Map.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="62" column="28" selection-start-line="62" selection-start-column="28" selection-end-line="62" selection-end-column="28" />
         </state>
       </provider>
     </entry>

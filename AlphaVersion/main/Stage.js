@@ -4,6 +4,7 @@ class Stage{
 		this.players = [];
 		this.bullets = [];
 		this.entities = [];
+        this.cnv ={};
 	}
 	
 	static get Instance(){
@@ -45,11 +46,14 @@ class Stage{
 	}
 	
 	initialize(){
-	let cnv = createCanvas(windowWidth * 0.9, windowHeight * 0.9);
-    let x = (windowWidth - width) / 2;
-	cnv.position(x, 0);  
+	this.cnv = createCanvas(displayWidth, displayHeight);
+   /* let x = (windowWidth - width) / 2;
+    let y =(windowHeight-height)/2;*/
+	this.cnv.position(0, 0);
+        width=windowWidth;
+        height=windowHeight;
    // tank = new Tank(width / 2, height / 2);
-/*
+
       SoundManager.Instance.registerSounds("sound1",Assets.get("sound1"),SoundManager.TYPESOUND.MUSIC);
 	  SoundManager.Instance.registerSounds("sound2",Assets.get("sound2"),SoundManager.TYPESOUND.MUSIC);
       SoundManager.Instance.registerSounds("sound3",Assets.get("sound3"),SoundManager.TYPESOUND.MUSIC);
@@ -59,12 +63,12 @@ class Stage{
       SoundManager.Instance.registerSounds("engine",Assets.get("engine"),SoundManager.TYPESOUND.EFFECT);
       SoundManager.Instance.registerSounds("movetank",Assets.get("movetank"),SoundManager.TYPESOUND.EFFECT);
       SoundManager.Instance.playSound("engine",true);
-	  */
+
 	  this.camera = new Camera(Assets.get("map").width, Assets.get("map").height);
 	  Map.load(Assets.get("map"));
-	  this.addMainPlayer(new Tank(2*Tile.SIZE, 2 * Tile.SIZE));
+	  this.addMainPlayer(new Tank(17*Tile.SIZE, 10 * Tile.SIZE));
 	  
-	  resizeCanvas(windowWidth*0.95, windowHeight*0.95);
+
 	  Map.onResize();
 	 
 	}
@@ -73,7 +77,7 @@ class Stage{
 		  background(0);
 		  push();
 		  Map.render(this.camera);
-		for(var i=0;i<this.players.length;i++){
+		for(let i=0;i<this.players.length;i++){
 			if(this.players[i] === this.mainPlayer) continue;
 			this.players[i].render();
 		}
@@ -81,13 +85,13 @@ class Stage{
 		this.mainPlayer.render();
 		
 		//render bullets on top
-		for(var i=0;i<this.bullets.length;i++){
+		for(let i=0;i<this.bullets.length;i++){
 			this.bullets[i].render();
 		}
 		fill(255);
 		noStroke();
-		textSize(12);
-		text(floor(frameRate()),50,50);
+		textSize(18);
+		text(floor(frameRate()),60,60);
 		pop();
 
 	}

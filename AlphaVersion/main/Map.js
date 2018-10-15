@@ -31,7 +31,7 @@ class Map {
                     let breakable = true;
                     let resistance = 0;
                     if (collidable[0] !== undefined) {
-                        breakable = collidable[0].properties.unbreakable;
+                        breakable = !collidable[0].properties.unbreakable;
                         resistance = collidable[0].properties.resistance;
                     }
                     this.map3DTiles[r][c][l] = new Tile(idImg, x, y, breakable, resistance);
@@ -59,7 +59,7 @@ class Map {
             }, {px: x + w / 2, py: y + h / 2}];
             for (let i = 0; i < points.length; ++i) {
                 c = this.map3DTiles[collidableY(points[i].py)][collidableX(points[i].px)][l];
-                if (c !== undefined && !c.walkable) {
+                if (c !== undefined && !c.walkable()) {
                     return c;
                 }
             }

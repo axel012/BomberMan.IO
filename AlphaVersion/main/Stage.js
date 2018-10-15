@@ -100,6 +100,13 @@ class Stage {
         textSize(18);
         text(floor(frameRate()), 60, 60);
         pop();
+        for(let i=0;i<this.bullets.length;++i){
+            let b=this.bullets[i];
+            let condition=b.exploted || b.x<0 || b.y<0 || b.x>Map.numCols*Tile.SIZE || b.y>Map.numRows*Tile.SIZE;
+            if(condition){
+                this.bullets.splice(i,1);
+            }
+        }
 
     }
 
@@ -109,5 +116,6 @@ class Stage {
             this.entities[i].update(dt);
         }
     }
+
 
 }

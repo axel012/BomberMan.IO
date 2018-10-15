@@ -53,7 +53,7 @@ class Tank {
             this.fireRateCounter=0;
             let xB=this.x+cos(this.rotation)*this.w/2;
             let yB=this.y +sin(this.rotation)*this.h/2;
-            let bullet=new Bullet(null,xB,yB,7,this.rotation,200);
+            let bullet=new Bullet(null,xB,yB,40,this.rotation,200);
             Stage.Instance.addEntity(bullet);
             SoundManager.Instance.stopSound('shot');
             SoundManager.Instance.playSound('shot',false);
@@ -88,13 +88,13 @@ class Tank {
             /*puntos medios  cuadrado tanque*/
             xEvaluated = this.x + this.xMove;
             yEvaluated = this.y;
-            colli = Map.getThereACollidable(xEvaluated, yEvaluated, this.w + 5, this.h + 5);
+            colli = Map.getThereACollidable(xEvaluated, yEvaluated, this.w , this.h );
             if (colli === null) {
                 this.x += this.xMove;
             } else {
                 xEvaluated = this.x;
                 yEvaluated = this.y + this.yMove;
-                colli = Map.getThereACollidable(xEvaluated, yEvaluated, this.w +5, this.h + 5);
+                colli = Map.getThereACollidable(xEvaluated, yEvaluated, this.w , this.h );
                 if (colli === null) {
                     this.y += this.yMove;
                 }

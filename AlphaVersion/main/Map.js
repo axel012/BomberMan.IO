@@ -29,7 +29,7 @@ class Map {
                     let y = c * Tile.SIZE;
                     let breakable = true;
 		    let resistance = 0;
-		    if(this.layers[l].name="bloques"){
+		    if(this.layers[l].name==="bloques"){
 			let collidable = this.collidables.filter((c) => c.x === x && c.y === y);
 			if (collidable[0] !== undefined) {
                        	   breakable = !collidable[0].properties.unbreakable;

@@ -42,10 +42,25 @@ class Bullet {
             let yEvaluated = this.y+i*sin(this.angle);
             colli = Map.getThereACollidable(xEvaluated, yEvaluated, this.w , this.h );
             if(colli!==null){
-                colli.resistance-=this.damage;
-                this.xMove=i*cos(this.angle);
-                this.yMove=i*sin(this.angle);
-                this.exploted=true;
+                
+		    console.log("resistencia antes:"+colli.resistance+" resistencia ahora:"+(colli.resistance-this.damage));
+		    colli.resistance -= this.damage;
+
+            console.log( Map.getThereACollidable(xEvaluated, yEvaluated, this.w , this.h ));
+                if (colli.walkable()) {
+
+                    /*
+                                        Map.backgroundImage.blend(TileManager.getTileImage(1), 0, 0, Tile.SIZE, Tile.SIZE, 2 * Tile.SIZE, 2 * Tile.SIZE, Tile.SIZE, Tile.SIZE, BLEND);
+                    */
+                    if (Map.map3DTiles[Math.trunc(yEvaluated / Tile.SIZE)][Math.trunc(xEvaluated / Tile.SIZE)][1].idImg - 1>= 0) {
+                        Map.backgroundImage.blend(TileManager.getTileImage(Map.map3DTiles[Math.trunc(yEvaluated / Tile.SIZE)][Math.trunc(xEvaluated / Tile.SIZE)][1].idImg - 1), 0, 0, Tile.SIZE, Tile.SIZE, colli.posY, colli.posX, Tile.SIZE, Tile.SIZE, BLEND);
+                    }
+                    colli.idImg = -1;
+
+                }
+                this.xMove = i * cos(this.angle);
+                this.yMove = i * sin(this.angle);
+                this.exploted = true;
                 break;
             }
         }

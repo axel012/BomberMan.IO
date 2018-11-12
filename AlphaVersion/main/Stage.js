@@ -1,9 +1,9 @@
 class Stage {
 
     constructor() {
-        this.players = [];
-        this.bullets = [];
-        this.entities = [];
+        this.players = new Set();
+        this.bullets = new Set();
+        this.entities = new Set();
         this.cnv = {};
     }
 
@@ -15,17 +15,17 @@ class Stage {
     }
 
     addEntity(e) {
-        this.entities.push(e);
+        this.entities.add(e);
         if (e instanceof Bullet) {
-            this.bullets.push(e);
+            this.bullets.add(e);
         } else if (e instanceof Tank) {
-            this.players.push(e);
+            this.players.add(e);
         }
     }
 
     addMainPlayer(p) {
         this.mainPlayer = p;
-        this.entities.push(p);
+        this.entities.add(p);
     }
 
     preloadAssets() {
@@ -84,27 +84,28 @@ class Stage {
         background(0);
         push();
         Map.render(this.camera);
-        for (let i = 0; i < this.players.length; i++) {
-            if (this.players[i] === this.mainPlayer) continue;
-            this.players[i].render();
+        for (let player of this.players) {
+            if (player === this.mainPlayer) continue;
+            player.render();
         }
         //render mainPlayer on top of other players
         this.mainPlayer.render();
 
         //render bullets on top
-        for (let i = 0; i < this.bullets.length; i++) {
-            this.bullets[i].render();
+        for (let bullet of this.bullets) {
+            bullet.render();
         }
         fill(255);
         noStroke();
         textSize(18);
         text(floor(frameRate()), 60, 60);
         pop();
-        for(let i=0;i<this.bullets.length;++i){
-            let b=this.bullets[i];
+        for(let bullet of this.bullets){
+            let b=bullet;
             let condition=b.exploted || b.x<0 || b.y<0 || b.x>Map.numCols*Tile.SIZE || b.y>Map.numRows*Tile.SIZE;
             if(condition){
-                this.bullets.splice(i,1);
+                this.bullets.delete(bullet);
+		this.entities.delete(bullet);
             }
         }
 
@@ -112,8 +113,8 @@ class Stage {
 
     update(dt) {
         this.mainPlayer.handleKeys();
-        for (let i = 0; i < this.entities.length; i++) {
-            this.entities[i].update(dt);
+        for (let entity of this.entities) {
+            entity.update(dt);
         }
     }
 

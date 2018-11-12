@@ -3,8 +3,8 @@ class Tank {
 
         this.img = Assets.get("redtank").get(0, 32 * 3, 32, 32);
 
-        this.w = this.img.width;
-        this.h = this.img.height;
+        this.w = Tile.SIZE*0.8;
+        this.h = Tile.SIZE*0.8;
         this.y = y + this.w / 2;
         this.x = x + this.h/2;
         this.linearSpeed = 2;
@@ -50,15 +50,15 @@ class Tank {
         //90 es la z
         if(keyIsDown(90)){
             if(this.fireRateCounter > this.limitFireRate){
-            this.fireRateCounter=0;
-            let xB=this.x+cos(this.rotation)*this.w/2;
-            let yB=this.y +sin(this.rotation)*this.h/2;
-            let bullet=new Bullet(null,xB,yB,40,this.rotation,200);
-            Stage.Instance.addEntity(bullet);
-            SoundManager.Instance.stopSound('shot');
-            SoundManager.Instance.playSound('shot',false);
+		    this.fireRateCounter=0;
+		    let xB=this.x+cos(this.rotation)*this.w/2;
+		    let yB=this.y +sin(this.rotation)*this.h/2;
+		    let bullet=new Bullet(null,xB,yB,40,this.rotation,200);
+		    Stage.Instance.addEntity(bullet);
+		    SoundManager.Instance.stopSound('shot');
+		    SoundManager.Instance.playSound('shot',false);
             }else{
-                ++this.fireRateCounter;
+	            ++this.fireRateCounter;
             }
         }
 
@@ -88,13 +88,13 @@ class Tank {
             /*puntos medios  cuadrado tanque*/
             xEvaluated = this.x + this.xMove;
             yEvaluated = this.y;
-            colli = Map.getThereACollidable(xEvaluated, yEvaluated, this.w , this.h );
+            colli = Map.getThereACollidable(xEvaluated, yEvaluated, this.w + 5, this.h + 5);
             if (colli === null) {
                 this.x += this.xMove;
             } else {
                 xEvaluated = this.x;
                 yEvaluated = this.y + this.yMove;
-                colli = Map.getThereACollidable(xEvaluated, yEvaluated, this.w , this.h );
+                colli = Map.getThereACollidable(xEvaluated, yEvaluated, this.w + 5, this.h + 5);
                 if (colli === null) {
                     this.y += this.yMove;
                 }
@@ -112,7 +112,7 @@ class Tank {
         stroke(0, 255, 0);
         strokeWeight(2);
         rotate(this.rotation);
-        image(this.img, -this.w / 2, -this.h / 2);
+        image(this.img, -this.w / 2, -this.h / 2,this.w,this.h);
         // rect(-this.w / 4, -this.w / 4, this.w/2, this.w/2);
         stroke(0, 0, 255);
         pop();

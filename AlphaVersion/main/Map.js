@@ -8,7 +8,7 @@ class Map {
         this.numCols = map.height;
         this.loadSpritesTiles(map);
 
-        this.backgroundImage={};
+        this.backgroundImage = createImage(Math.floor(Map.numCols * Tile.SIZE), Math.floor(Map.numRows * Tile.SIZE));
         this.map3DTiles = [];
         for (let i = 0; i < this.numRows; ++i) {
             this.map3DTiles[i] = [];
@@ -27,13 +27,16 @@ class Map {
                     let idImg = this.layers[l].data[index] - 1;
                     let x = r * Tile.SIZE;
                     let y = c * Tile.SIZE;
-                    let collidable = this.collidables.filter((c) => c.x === x && c.y === y);
                     let breakable = true;
-                    let resistance = 0;
-                    if (collidable[0] !== undefined) {
-                        breakable = !collidable[0].properties.unbreakable;
-                        resistance = collidable[0].properties.resistance;
-                    }
+		    let resistance = 0;
+		    if(this.layers[l].name="bloques"){
+			let collidable = this.collidables.filter((c) => c.x === x && c.y === y);
+			if (collidable[0] !== undefined) {
+                       	   breakable = !collidable[0].properties.unbreakable;
+                           resistance = collidable[0].properties.resistance;
+                         }		
+		    }
+                    
                     this.map3DTiles[r][c][l] = new Tile(idImg, x, y, breakable, resistance);
                 }
             }
@@ -44,19 +47,24 @@ class Map {
 
     static getThereACollidable(x, y, w, h) {
         let collidableX = (posX) => {
-            return Math.trunc(posX / Tile.SIZE)
+            return Math.trunc(posX / Tile.SIZE);
         };
         let collidableY = (posY) => {
-            return Math.trunc(posY / Tile.SIZE)
+            return Math.trunc(posY / Tile.SIZE);
         };
 
         // let index = c + r * (this.numCols);
         for (let l = 0; l < this.map3DTiles[0][0].length; ++l) {
             let c;
-            let points = [{px: x - w / 2, py: y - h / 2}, {px: x + w / 2, py: y - h / 2}, {
-                px: x - w / 2,
-                py: y + h / 2
-            }, {px: x + w / 2, py: y + h / 2}];
+            let points = [
+		{px: x - w / 2, py: y - h / 2}, 
+		{px: x + w / 2, py: y - h / 2},
+                {px: x - w / 2, py: y + h / 2},
+                {px: x + w / 2, py: y + h / 2},
+                {px: x - w / 2, py: y},
+                {px: x + w / 2, py: y},
+                {px: x, py: y - h / 2},
+                {px: x, py: y + h / 2}];
             for (let i = 0; i < points.length; ++i) {
                 c = this.map3DTiles[collidableY(points[i].py)][collidableX(points[i].px)][l];
                 if (c !== undefined && !c.walkable()) {
@@ -89,32 +97,32 @@ class Map {
         else {
             this.scl = height / (this.numCols * Tile.SIZE);
         }
-        if(this.scl>1){
-            this.scl=1;
-        }else if(this.scl<1){
-            this.scl*=0.9;
+        if (this.scl > 1) {
+            this.scl = 1;
+        } else if (this.scl < 1) {
+            this.scl *= 0.9;
         }
         this.hasChanges = true;
     }
 
 
     static render(camera) {
-        let xo=0;
-        if(height<width){
-             xo= (width - this.numCols * this.scl * Tile.SIZE) / 2;
+        let xo = 0;
+        if (height < width) {
+            xo = (width - this.numCols * this.scl * Tile.SIZE) / 2;
         }
 
         Stage.Instance.camera.followEntity(Stage.Instance.mainPlayer);
         translate(xo, 0);
-        let transx=(-camera.xOffset )===-0?0:(-camera.xOffset );
-        let transy=(-camera.yOffset )===-0?0:(-camera.yOffset );
+        let transx = (-camera.xOffset) === -0 ? 0 : (-camera.xOffset);
+        let transy = (-camera.yOffset) === -0 ? 0 : (-camera.yOffset);
 
-        translate(transx,transy);
+        translate(transx, transy);
 
 
         if (this.hasChanges) {
             this.hasChanges = false;
-            this.backgroundImage = createImage(Math.floor(Map.numCols * Tile.SIZE), Math.floor(Map.numRows * Tile.SIZE));
+
             for (let l = 0; l < this.layers.length; ++l) {
                 if (this.layers[l].type === "objectgroup") {
                     continue;
@@ -127,7 +135,7 @@ class Map {
                             continue
                         }
 
-                        this.backgroundImage.blend(TileManager.getTileImage(idImg), 0,0,Tile.SIZE,Tile.SIZE, c*Tile.SIZE, r*Tile.SIZE, Tile.SIZE, Tile.SIZE, BLEND);
+                        this.backgroundImage.blend(TileManager.getTileImage(idImg), 0, 0, Tile.SIZE, Tile.SIZE, c * Tile.SIZE, r * Tile.SIZE, Tile.SIZE, Tile.SIZE, BLEND);
                     }
                 }
             }
@@ -135,7 +143,7 @@ class Map {
 
         }
 
-        image(this.backgroundImage,0,0,Math.floor(this.numCols*Tile.SIZE*this.scl),Math.floor(this.numCols*Tile.SIZE*this.scl));
+        image(this.backgroundImage, 0, 0, Math.floor(this.numCols * Tile.SIZE * this.scl), Math.floor(this.numCols * Tile.SIZE * this.scl));
         scale(this.scl);
     }
 

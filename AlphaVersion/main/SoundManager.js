@@ -48,7 +48,7 @@
 
                     clearInterval(this.intervals[thesound]);
                 }
-                this.intervals[thesound] = setInterval(function () { sound.play(); }, sound.duration() * 1000 -300);
+                this.intervals[thesound] = setInterval(function () { sound.jump(); }, sound.duration() * 1000 -300);
             }
         }
 
@@ -57,7 +57,6 @@
     stopSound(thesound) {
         clearInterval(this.intervals[thesound]);
         this.soundsEffects[thesound].stop();
-        
     }
 
     playSounds() {

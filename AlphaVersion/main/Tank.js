@@ -53,7 +53,7 @@ class Tank {
 		    this.fireRateCounter=0;
 		    let xB=this.x+cos(this.rotation)*this.w/2;
 		    let yB=this.y +sin(this.rotation)*this.h/2;
-		    let bullet=new Bullet(null,xB,yB,40,this.rotation,200);
+		    let bullet=new Bullet(null,xB,yB,40,this.rotation,100);
 		    Stage.Instance.addEntity(bullet);
 		    SoundManager.Instance.stopSound('shot');
 		    SoundManager.Instance.playSound('shot',false);

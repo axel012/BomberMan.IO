@@ -24,7 +24,7 @@ class Map {
             for (let r = 0; r < this.numRows; ++r) {
                 for (let c = 0; c < this.numCols; ++c) {
                     let index = c + r * (this.numCols);
-                    let idImg = this.layers[l].data[index] - 1;
+                    let idImg = this.layers[l].data[index] - 2;
                     let x = r * Tile.SIZE;
                     let y = c * Tile.SIZE;
                     let breakable = true;

@@ -1,0 +1,14 @@
+.sala{
+    width: 85%;
+    height: 80px;
+    background-color: black;
+    color: white;
+}
+
+.sala h2{
+    text-align: left;
+}
+
+.sala h4{
+    text-align: right;
+}

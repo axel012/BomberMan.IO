@@ -1,0 +1,16 @@
+{
+  "name": "Tanquesitos",
+  "version": "1.0.1",
+  "description": "api de la mejor app del universo de tanques",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "~1.18.3",
+    "cookie-parser": "^1.4.3",
+    "cors": "~2.8.5",
+    "express": "~4.16.4",
+    "md5": "^2.2.1",
+    "mongoose": "~5.3.12",
+    "shortid": "^2.2.14"
+  },
+  "author": "Lopapa Andres-Vazquez Axel"
+}

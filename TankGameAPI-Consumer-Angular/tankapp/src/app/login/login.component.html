@@ -1,0 +1,14 @@
+
+<form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+  <label for="user">Usuario</label>
+  <input type="text" name="user" id="user" ngModel>
+  <label for="pass">Password</label>
+  <input type="password" name="pass" id="pass" ngModel>
+  <input type="submit">  
+  <div *ngIf="errorCode === 404">
+    <p>Usuario o contraseña incorrectos</p>
+  </div>
+  <div *ngIf="errorCode === 500">
+    <p>Error en el servidor de peticiones</p>
+  </div>
+</form>  
